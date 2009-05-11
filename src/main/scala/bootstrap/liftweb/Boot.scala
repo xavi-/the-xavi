@@ -14,13 +14,15 @@ class Boot {
   def boot {
     // where to search snippet
     LiftRules.addToPackages("net.lift.theXavi")
-
+        
     // Build SiteMap
     val entries = Menu(Loc("Home", List("index"), "Home")) ::
-                  Menu(Loc("Drag Shapes", List("drag-shapes"), "Drag Shapes")) ::
+                  Menu(Loc("Visual Sort", List("visual-sort"), "Visual Sort")) ::
+                  Menu(Loc("Drag Shapes", List("drag-shapes", "index"), "Drag Shapes"),
+                      Menu(Loc("Get the goal", List("drag-shapes", "get-the-goal"), "Get the goal")),
+                      Menu(Loc("Find the Slant", List("drag-shapes", "slanted-box"), "Find the slanted box"))) ::
                   Menu(Loc("Key Remapper", List("key-remapper"), "Key Remapper")) ::
                   Menu(Loc("Half Baked Ideas", List("half-baked-ideas"), "Half Baked Ideas")) ::
-                  Menu(Loc("3/4 Baked Ideas", List("three-quarter-baked-ideas"), "3/4 Baked Ideas")) ::
                   Menu(Loc("About Me", List("about-me"), "About Me")) ::
                   Nil
     LiftRules.setSiteMap(SiteMap(entries:_*))
