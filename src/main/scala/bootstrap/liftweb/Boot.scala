@@ -22,7 +22,8 @@ class Boot {
                       Menu(Loc("Get the goal", List("drag-shapes", "get-the-goal"), "Get the goal")),
                       Menu(Loc("Find the Slant", List("drag-shapes", "slanted-box"), "Find the slanted box"))) ::
                   Menu(Loc("Key Remapper", List("key-remapper"), "Key Remapper")) ::
-                  Menu(Loc("Half Baked Ideas", List("half-baked-ideas"), "Half Baked Ideas")) ::
+                  Menu(Loc("Half Baked Ideas", List("half-baked-ideas", "index"), "Half Baked Ideas"),
+                      Menu(Loc("tv-downloader", List("half-baked-ideas", "tv-schedule-downloader"), "TV Schedule Downloader"))) ::
                   Menu(Loc("About Me", List("about-me"), "About Me")) ::
                   Nil
     LiftRules.setSiteMap(SiteMap(entries:_*))
