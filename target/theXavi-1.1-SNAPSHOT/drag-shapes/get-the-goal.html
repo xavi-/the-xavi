@@ -1,0 +1,223 @@
+<lift:surround with="default" at="content">
+<head>
+    <title>Get to the Goal v3.1</title>
+    <style type="text/css">
+    /*<![CDATA[*/
+        #board, 
+        #board-screen
+        {
+            width: 500px;
+            height: 500px;
+        }
+        
+        #board
+        {
+            border: 1px solid black;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #board-screen
+        {
+            position: absolute;
+            border: 0px solid black;
+            z-index: 9999;
+        }
+        
+        #score
+        {
+            font-size: 30px;
+        }
+    /*]]>*/
+    </style>
+</head>
+<div id="score">Score: 0</div>
+<div id="board">
+    <img id="board-screen" alt="board" src="/pics/get-the-goal/transparent.gif" usemap="#board-def" />
+    <map id="board-def" name="board-def">
+    </map>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var x = {};
+ 
+(function() {
+    var util = {};
+    util.customEvent = function(item) {
+        var _listeners = [];
+        
+        var event = {};
+        
+        event.add = function(listener) { _listeners.push(listener); };
+        
+        event.trigger = function() {
+            for(var i = 0; i < _listeners.length; i++) {
+                _listeners[i].call(item);
+            }
+        };
+        
+        return event;
+    };
+    
+    x.shape = {};
+    x.shape.create = function(areaElem) {
+        var _points = (function() {
+            var coords = $(areaElem).attr("coords");
+            var points = [];
+            var tempPts = coords.split(",");
+            
+            for(var i = 0; i < tempPts.length; i += 2) {
+                var x = Number(tempPts[i]), y = Number(tempPts[i + 1]);
+                
+                points.push({ "x": x, "y": y });
+            }
+            
+            return points;
+        })();
+        
+        var shape = {};
+        
+        // Returns object of the form {x: int, y: int, width: int, height: int};
+        shape.position = { x: 0, y: 0 };
+        
+        shape.areaElement = areaElem;
+        
+        shape.onMove = util.customEvent(shape);
+        
+        // Pos is the x, y coordinates of the upper left hand corner of the bounding box
+        shape.move = function(pos, e) { 
+            var diff = { x: pos.x - shape.position.x, y: pos.y - shape.position.y };
+            
+            var coords = [];
+            for(var i = 0; i < _points.length; i++) {
+                _points[i].x += diff.x; 
+                _points[i].y += diff.y;
+                
+                coords.push(_points[i].x);
+                coords.push(_points[i].y);
+            }
+            
+            $(areaElem).attr("coords", coords.join(","));
+            
+            shape.position = pos;
+            
+            shape.onMove.trigger();
+        };
+        return shape;
+    };
+    
+    x.board = {};
+    x.board.create = function(boardId) {
+        $("#" + boardId + " + img")
+            .mousedown(function() { return false; }) // Prevent dragging cover image
+        
+        var board = {};
+        
+        board.boardId = boardId;
+        
+        board.addShape = function(coords) {
+            var $area = $("<area>");
+            $area
+                .attr("shape", "poly")
+                .attr("coords", coords)
+                .prependTo("#" + boardId)
+            
+            return x.shape.create($area[0]);
+        };
+        
+        return board;
+    };
+    
+    x.animator = function(action) {
+        var lastTime = (new Date()).getTime()
+        var aniTimer;
+        
+        var aniHelper = function() {
+            var curTime = (new Date()).getTime();
+            var timeDiff = curTime - lastTime;
+            lastTime = curTime;
+            
+            action(timeDiff);
+        };
+        aniTimer = window.setInterval(aniHelper, 20);
+    };
+    
+    x.game = {};
+    x.game.create = function(board) {
+        var _score = 0;
+        var addDisplayer = function(shape, picSrc) {
+            var img = new Image();
+            img.src = picSrc;
+            
+            $(img)
+                .css("position", "absolute")
+                .appendTo("#board");
+            
+            shape.onMove.add(function(e) {                
+                img.style.left = shape.position.x + "px";
+                img.style.top = shape.position.y + "px";
+            });
+        };
+        
+        var scored = function() {
+            shape.move({ x: 350 * Math.random(), y: 350 * Math.random() });
+            addEnemy();
+            _score += enemies.length * 100;
+            $("#score").text("Score: " + _score);
+        };
+        
+        var lose = function() {
+            _score -= (30 - enemies.length) * 10;
+            alert("You lost!!!");
+        }
+        
+        var shape = board.addShape("5,52,64,54,98,6,96,65,142,97,86,97,52,142,54,86");
+        addDisplayer(shape, "/pics/get-the-goal/the-goal.gif");
+        
+        shape.move({ x: 350 * Math.random(), y: 350 * Math.random() });
+        $(shape.areaElement).mouseover(scored);
+        
+        /////////
+        // Add enemies
+        var enemies = [];
+        var addEnemy = function() { 
+            if (enemies.length > 20) { return; }
+            var enemy = board.addShape("0,37,37,0,74,38,37,74");
+            addDisplayer(enemy, "/pics/get-the-goal/enemy.gif");
+            
+            enemy.velocityVec = { x: 4 * Math.random() - 2 , 
+                                  y: 4 * Math.random() - 2 };
+            enemy.move({ x: 425 * Math.random(), y: 425 * Math.random() });
+            $(enemy.areaElement).mouseover(lose);
+            
+            enemies.push(enemy);
+        };
+        for(var i = 0; i < 5; i++) { addEnemy(); }
+        
+        var moveEnemies = function(timeDiff) {
+            timeDiff /= 15;
+            
+            for(i = 0; i < enemies.length; i++) {
+                var enemy = enemies[i];
+                var pos = enemy.position;
+                var newPos = { x: pos.x + enemy.velocityVec.x * timeDiff,
+                               y: pos.y + enemy.velocityVec.y * timeDiff };
+                enemy.move(newPos);
+                
+                if(newPos.x >= 425) { enemy.velocityVec.x = -Math.abs(enemy.velocityVec.x); }
+                else if(newPos.x <= 0) { enemy.velocityVec.x = Math.abs(enemy.velocityVec.x); }
+                
+                if(newPos.y >= 425) { enemy.velocityVec.y = -Math.abs(enemy.velocityVec.y); }
+                else if(newPos.y <= 0) { enemy.velocityVec.y = Math.abs(enemy.velocityVec.y); }
+            }
+        };
+        
+        x.animator(moveEnemies);
+    };    
+    
+    var board = x.board.create("board-def");
+    x.game.create(board);
+})();
+//]]>
+</script>
+</lift:surround>

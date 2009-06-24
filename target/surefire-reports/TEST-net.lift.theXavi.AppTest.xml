@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" skipped="0" tests="2" time="1.793" failures="0" name="net.lift.theXavi.AppTest">
+  <properties>
+    <property value="Sun Microsystems Inc." name="java.vendor"/>
+    <property value="C:\Documents and Settings\Administrator\.m2\repository" name="localRepository"/>
+    <property value="C:\Program Files\Lenovo" name="env.TVT"/>
+    <property value="HotSpot Client Compiler" name="sun.management.compiler"/>
+    <property value="$P$G" name="env.PROMPT"/>
+    <property value="Windows XP" name="os.name"/>
+    <property value="NO" name="env.FP_NO_HOST_CHECK"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_10\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_10\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_10\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_10\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_10\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_10\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_10\jre\classes" name="sun.boot.class.path"/>
+    <property value="XAVIBM" name="env.COMPUTERNAME"/>
+    <property value="C:\Documents and Settings\All Users.WINDOWS" name="env.ALLUSERSPROFILE"/>
+    <property value="windows" name="sun.desktop"/>
+    <property value="Sun Microsystems Inc." name="java.vm.specification.vendor"/>
+    <property value="1.5.0_10-b03" name="java.runtime.version"/>
+    <property value="\Documents and Settings\Administrator" name="env.HOMEPATH"/>
+    <property value="Administrator" name="user.name"/>
+    <property value="C:\Program Files\Java\jre6\lib\ext\QTJava.zip" name="env.QTJAVA"/>
+    <property value="en" name="user.language"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_10\jre\bin" name="sun.boot.library.path"/>
+    <property value="C:\Program Files\Apache Software Foundation\apache-maven-2.0.9\bin\m2.conf" name="classworlds.conf"/>
+    <property value="1.5.0_10" name="java.version"/>
+    <property value="x86 Family 6 Model 9 Stepping 5, GenuineIntel" name="env.PROCESSOR_IDENTIFIER"/>
+    <property value="America/New_York" name="user.timezone"/>
+    <property value="C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp" name="env.TEMP"/>
+    <property value="32" name="sun.arch.data.model"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_10\jre\lib\endorsed" name="java.endorsed.dirs"/>
+    <property value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" name="sun.cpu.isalist"/>
+    <property value="C:" name="env.HOMEDRIVE"/>
+    <property value="Cp1252" name="sun.jnu.encoding"/>
+    <property value="sun.io" name="file.encoding.pkg"/>
+    <property value="\" name="file.separator"/>
+    <property value="Java Platform API Specification" name="java.specification.name"/>
+    <property value="49.0" name="java.class.version"/>
+    <property value="US" name="user.country"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_10\jre" name="java.home"/>
+    <property value="C:\Documents and Settings\Administrator\Application Data" name="env.APPDATA"/>
+    <property value="mixed mode" name="java.vm.info"/>
+    <property value="C:\WINDOWS\system32\cmd.exe" name="env.ComSpec"/>
+    <property value="Windows_NT" name="env.OS"/>
+    <property value="C:\Program Files\Common Files" name="env.CommonProgramFiles"/>
+    <property value="5.1" name="os.version"/>
+    <property value=";" name="path.separator"/>
+    <property value="1.5.0_10-b03" name="java.vm.version"/>
+    <property value="" name="user.variant"/>
+    <property value="C:\Documents and Settings\Administrator" name="env.USERPROFILE"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_10" name="env.JAVA_HOME"/>
+    <property value="sun.awt.windows.WPrinterJob" name="java.awt.printerjob"/>
+    <property value="C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp" name="env.TMP"/>
+    <property value="UnicodeLittle" name="sun.io.unicode.encoding"/>
+    <property value="sun.awt.windows.WToolkit" name="awt.toolkit"/>
+    <property value="C:\Documents and Settings\Administrator" name="user.home"/>
+    <property value="Console" name="env.SESSIONNAME"/>
+    <property value="Sun Microsystems Inc." name="java.specification.vendor"/>
+    <property value=".;C:\Program Files\Java\jre6\lib\ext\QTJava.zip" name="env.CLASSPATH"/>
+    <property value="C:\Program Files\Apache Software Foundation\apache-maven-2.0.9" name="env.M2_HOME"/>
+    <property value="C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\" name="env.VS80COMNTOOLS"/>
+    <property value="1" name="env.NUMBER_OF_PROCESSORS"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_10\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\MiKTeX 2.7\miktex\bin;c:\program files\thinkpad\utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\ati technologies\ati control panel;c:\program files\thinkpad\connectutilities;c:\program files\securecrt\;C:\MATLAB72\bin\win32;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\Subversion\bin;C:\Program Files\Common Files\Lenovo;C:\Program Files\Git\cmd;C:\Program Files\QuickTime Alternative\QTSystem\;&quot;C:\Program Files\Apache Software Foundation\apache-maven-2.0.9\bin&quot;;C:\Program Files\MiKTeX 2.7\miktex\bin;c:\program files\thinkpad\utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\ati technologies\ati control panel;c:\program files\thinkpad\connectutilities;c:\program files\securecrt\;C:\MATLAB72\bin\win32;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\Subversion\bin;C:\Program Files\Common Files\Lenovo;C:\Program Files\Git\cmd;C:\Program Files\QuickTime Alternative\QTSystem\;C:\Program Files\Scala\bin" name="java.library.path"/>
+    <property value="http://java.sun.com/" name="java.vendor.url"/>
+    <property value="clean install" name="env.MAVEN_CMD_LINE_ARGS"/>
+    <property value="Sun Microsystems Inc." name="java.vm.vendor"/>
+    <property value="C:\Program Files\Apache Software Foundation\apache-maven-2.0.9" name="maven.home"/>
+    <property value="Java(TM) 2 Runtime Environment, Standard Edition" name="java.runtime.name"/>
+    <property value="C:\Program Files\Apache Software Foundation\apache-maven-2.0.9\boot\classworlds-1.1.jar" name="java.class.path"/>
+    <property value="&quot;C:\Program Files\Java\jdk1.5.0_10\bin\java.exe&quot;" name="env.MAVEN_JAVA_EXE"/>
+    <property value="Java Virtual Machine Specification" name="java.vm.specification.name"/>
+    <property value="\\XAVIBM" name="env.LOGONSERVER"/>
+    <property value="C:\WINDOWS" name="env.windir"/>
+    <property value="1.0" name="java.vm.specification.version"/>
+    <property value="x86" name="env.PROCESSOR_ARCHITECTURE"/>
+    <property value="little" name="sun.cpu.endian"/>
+    <property value="Service Pack 3" name="sun.os.patch.level"/>
+    <property value="C:\Documents and Settings\Administrator" name="env.HOME"/>
+    <property value="C:\Program Files" name="env.ProgramFiles"/>
+    <property value="C:\Lift\theXavi\target\test-classes;C:\Lift\theXavi\target\classes;C:\Documents and Settings\Administrator\.m2\repository\org\scala-lang\scala-library\2.7.4\scala-library-2.7.4.jar;C:\Documents and Settings\Administrator\.m2\repository\net\liftweb\lift-util\1.1-SNAPSHOT\lift-util-1.1-SNAPSHOT.jar;C:\Documents and Settings\Administrator\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar;C:\Documents and Settings\Administrator\.m2\repository\javax\mail\mail\1.4\mail-1.4.jar;C:\Documents and Settings\Administrator\.m2\repository\javax\activation\activation\1.1\activation-1.1.jar;C:\Documents and Settings\Administrator\.m2\repository\commons-httpclient\commons-httpclient\3.1\commons-httpclient-3.1.jar;C:\Documents and Settings\Administrator\.m2\repository\commons-logging\commons-logging\1.0.4\commons-logging-1.0.4.jar;C:\Documents and Settings\Administrator\.m2\repository\commons-codec\commons-codec\1.3\commons-codec-1.3.jar;C:\Documents and Settings\Administrator\.m2\repository\commons-fileupload\commons-fileupload\1.2.1\commons-fileupload-1.2.1.jar;C:\Documents and Settings\Administrator\.m2\repository\commons-collections\commons-collections\3.2.1\commons-collections-3.2.1.jar;C:\Documents and Settings\Administrator\.m2\repository\net\liftweb\lift-webkit\1.1-SNAPSHOT\lift-webkit-1.1-SNAPSHOT.jar;C:\Documents and Settings\Administrator\.m2\repository\net\liftweb\lift-mapper\1.1-SNAPSHOT\lift-mapper-1.1-SNAPSHOT.jar;C:\Documents and Settings\Administrator\.m2\repository\javax\servlet\servlet-api\2.5\servlet-api-2.5.jar;C:\Documents and Settings\Administrator\.m2\repository\junit\junit\4.5\junit-4.5.jar;C:\Documents and Settings\Administrator\.m2\repository\org\mortbay\jetty\jetty\6.1.16\jetty-6.1.16.jar;C:\Documents and Settings\Administrator\.m2\repository\org\mortbay\jetty\jetty-util\6.1.16\jetty-util-6.1.16.jar;C:\Documents and Settings\Administrator\.m2\repository\org\mortbay\jetty\servlet-api\2.5-20081211\servlet-api-2.5-20081211.jar;C:\Documents and Settings\Administrator\.m2\repository\org\scala-lang\scala-compiler\2.7.4\scala-compiler-2.7.4.jar;" name="surefire.test.class.path"/>
+    <property value="C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\" name="java.io.tmpdir"/>
+    <property value="0905" name="env.PROCESSOR_REVISION"/>
+    <property value="http://java.sun.com/cgi-bin/bugreport.cgi" name="java.vendor.url.bug"/>
+    <property value="C:\WINDOWS" name="env.SystemRoot"/>
+    <property value="sun.awt.Win32GraphicsEnvironment" name="java.awt.graphicsenv"/>
+    <property value="x86" name="os.arch"/>
+    <property value="C:\Program Files\Java\jdk1.5.0_10\jre\lib\ext" name="java.ext.dirs"/>
+    <property value="C:\Lift\theXavi" name="user.dir"/>
+    <property value="
+" name="line.separator"/>
+    <property value="Java HotSpot(TM) Client VM" name="java.vm.name"/>
+    <property value="&quot;C:\Program Files\Apache Software Foundation\apache-maven-2.0.9\boot\classworlds-1.1.jar&quot;" name="env.CLASSWORLDS_JAR"/>
+    <property value=".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH" name="env.PATHEXT"/>
+    <property value="C:\Program Files\MiKTeX 2.7\miktex\bin;c:\program files\thinkpad\utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\ati technologies\ati control panel;c:\program files\thinkpad\connectutilities;c:\program files\securecrt\;C:\MATLAB72\bin\win32;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\Subversion\bin;C:\Program Files\Common Files\Lenovo;C:\Program Files\Git\cmd;C:\Program Files\QuickTime Alternative\QTSystem\;&quot;C:\Program Files\Apache Software Foundation\apache-maven-2.0.9\bin&quot;;C:\Program Files\MiKTeX 2.7\miktex\bin;c:\program files\thinkpad\utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\ati technologies\ati control panel;c:\program files\thinkpad\connectutilities;c:\program files\securecrt\;C:\MATLAB72\bin\win32;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\Subversion\bin;C:\Program Files\Common Files\Lenovo;C:\Program Files\Git\cmd;C:\Program Files\QuickTime Alternative\QTSystem\;C:\Program Files\Scala\bin" name="env.Path"/>
+    <property value="C:\Lift\theXavi" name="basedir"/>
+    <property value="0" name="env.ERROR_CODE"/>
+    <property value="C:\Program Files\Apache Software Foundation\apache-maven-2.0.9\bin" name="env.M2"/>
+    <property value="Administrator" name="env.USERNAME"/>
+    <property value="C:\Program Files\Scala" name="env.SCALA_HOME"/>
+    <property value="C:" name="env.SystemDrive"/>
+    <property value="Cp1252" name="file.encoding"/>
+    <property value="XAVIBM" name="env.USERDOMAIN"/>
+    <property value="1.5" name="java.specification.version"/>
+    <property value="6" name="env.PROCESSOR_LEVEL"/>
+  </properties>
+  <testcase classname="net.lift.theXavi.AppTest" time="1.633" name="testXml"/>
+  <testcase classname="net.lift.theXavi.AppTest" time="0" name="testOK"/>
+</testsuite>

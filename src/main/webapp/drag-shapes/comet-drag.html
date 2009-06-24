@@ -1,0 +1,51 @@
+<lift:surround with="default" at="content">
+<head>
+    <style>
+    /*<![CDATA[*/    
+    #shape-container
+    {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        border: 1px solid black;
+    }
+    
+    #shape
+    {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background: green;
+        cursor: move;
+    }
+    /*]]>*/
+    </style>
+    <script type="text/javascript" src="/classpath/json.js" id="json"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"/>
+    <script type="text/javascript">
+    //<![CDATA[
+    var sendUpdate = (function() {
+        var lastSent = (new Date()).getTime();
+        
+        return function(x, y) {
+            var curTime = (new Date()).getTime();
+            
+            if(curTime - lastSent < 300) { return; }
+            
+            lastSent = curTime;
+            moveShape(x, y);
+        };
+    })();
+    
+    function addDrag() {
+        $("#shape")
+            .draggable({ containment: "#shape-container", 
+                         drag: function(e, ui) { sendUpdate(ui.position.left, ui.position.top); } })
+    }
+    //]]>
+    </script>
+</head>
+<div id="shape-container">
+    <lift:comet type="CometDragDisplay"/>
+</div>
+</lift:surround>
