@@ -2,6 +2,7 @@
 <head>
 <title>drag-drop-irregular-shapes</title>
 <style type="text/css" media="screen">
+/*<![CDATA[*/
     #board, 
     #board-screen
     {
@@ -14,6 +15,11 @@
         border: 1px solid black;
         position: relative;
         overflow: hidden;
+    }
+    
+    #board-def area
+    {
+        cursor:move;
     }
     
     #board-screen
@@ -43,6 +49,7 @@
         height: 5px;
         background: blue;
     }
+/*]]>*/
 </style>
 </head>
 <span>Drag and drop the pieces to make a diamond</span>
