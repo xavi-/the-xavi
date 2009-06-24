@@ -1,10 +1,10 @@
 <lift:surround with="default" at="content">
 <head>
 <style type="text/css">
-<![CDATA[
+/*<![CDATA[*/
 img
 {
-    filter:progid:DXImageTransform.Microsoft.Matrix();
+    filter:progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand');
     position: absolute;
 }
 
@@ -12,7 +12,7 @@ div
 {
     postion: relative;
 }
-]]>
+/*]]>*/
 </style>
 </head>
     <img id="aDiv" src="/pics/rotate-image/halo-dude.jpg"/>
@@ -23,7 +23,7 @@ div
 var rotatable = {};
 
 (function() {
-	rotatable.create = function(img, initAng) {
+    rotatable.create = function(img, initAng) {
         var _useCanvas = !img.filters;
         var _hasLoaded = false;
         var listeners = { ready: [] };
