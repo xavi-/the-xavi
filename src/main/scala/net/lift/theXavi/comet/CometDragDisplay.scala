@@ -1,15 +1,12 @@
 package net.lift.theXavi.comet
 
 import net.liftweb._
-import net.liftweb.util._
 import http._
 import js._
 import JsCmds._
-import util._
 
 import net.liftweb.http.js.JE._
 
-import scala.xml._
 import scala.actors._
 import scala.actors.Actor._
 
@@ -56,9 +53,9 @@ class CometDragDisplay extends CometActor {
     case MoveShape(x, y) =>
       shapePos = (x, y)
       if(!isSender.get)
-    	  partialUpdate(JsRaw("$('#shape').css({ left: " + shapePos._1 + ", top: " + shapePos._2 + "})"))
-	  else
-         isSender(false)
+    	  partialUpdate(JsRaw("$('#shape').css({left: " + shapePos._1 + ", top: " + shapePos._2 + "})"))
+	    else
+        isSender(false)
   }
   
   override def handleJson(in: Any): JsCmd = in match {
