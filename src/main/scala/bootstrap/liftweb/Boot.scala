@@ -6,10 +6,6 @@ import _root_.net.liftweb.sitemap._
 import _root_.net.liftweb.sitemap.Loc._
 import Helpers._
 
-/**
-  * A class that's instantiated early and run.  It allows the application
-  * to modify lift's environment
-  */
 class Boot {
   def boot {
     // where to search snippet
@@ -28,6 +24,8 @@ class Boot {
                     Menu(Loc("Rotate Image", List("drag-shapes", "rotate-image"), "Rotate Image")),
                     Menu(Loc("Find the Slant", List("drag-shapes", "slanted-box"), "Find the slanted box"))) ::
                 Menu(Loc("Key Remapper", List("key-remapper"), "Key Remapper")) ::
+                Menu(Loc("Articles", List("articles", "index"), "Articles"),
+                    Menu(Loc("operation-not-supported", List("articles", "operation-is-not-supported-code-9"), "Google Analytics Adventures"))) ::
                 Menu(Loc("tv-downloader", List("tv-schedule-downloader"), "TV Schedule Downloader")) ::
                 Menu(Loc("About Me", List("about-me"), "About Me")) ::
                 Menu(Loc("404", List("404"), "404", Hidden)) ::

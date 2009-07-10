@@ -1,0 +1,79 @@
+<lift:surround with="default" at="content">
+<head>
+<title>XHTML and Google Analytics - Operation is not supported" code: "9</title>
+<style>
+/*<![CDATA[*/
+    .code { font-family: monospace; }
+/*]]>*/
+</style>
+</head>
+<h2>Operation is not supported" code: "9</h2>
+<div class="date">July 08, 2009</div>
+<h3>My Adventures with Lift, XHTML and Google Analytics</h3>
+<p>
+Yesterday I decided to add google analytics to my website.  I thought this endeavor would take no more than half an hour.  I'm embarrassed to say that it ended up taking me over 4 frustrating hours.  I ran into 2 stumbling block, both of which were related to the fact that I was trying to use google analytics on an XHTML page.
+</p>
+<p>
+It started out simply enough.  I opened an account and was then told to add <a href="#original">this snippet</a> to my page.  I dutifully pasted the code into the base page and refreshed my website.  I immediately got an error.  
+</p>
+<h4>Problem 1: IE6 - Error: Syntax error</h4>
+<p>
+My first stumbling block was an IE6 error message that simply said &quot;Error: Syntax error&quot;. This seemed like a classic copy/paste mistake, so I view the source to make sure the snippet was correct.  It turned out that each quote character (<span class="code">&quot;</span>) in the GA snippet had been encoded as <span class="code">&amp;quot;</span>, which meant code like this:
+</p>
+<pre>var foo = &quot;more foo&quot;;</pre>
+<p>
+turned into:
+</p>
+<pre>var foo = &amp;quot;more foo&amp;quot;;</pre>
+<p>
+which naturally caused a syntax error.
+</p>
+<p>
+I've ran into this behavior many times, so instantly knew the problem.  I built my page on the <a href="http://liftweb.net/">Lift</a> framework and as part of its page rendering process it HTML encodes all text nodes.  I simply added <span class="code">//&lt;![CDATA[</span> and <span class="code">//]]&gt;</span> to the beginning and end of each GA script tag, and the problem went away.
+</p>
+<h4>Problem 2: Firefox - Operation is not supported" code: "9</h4>
+<p>
+My next stumbling block was with Firefox.  I reloaded my page and again, an error immediately appeared.  The error message from firebug simply said <span class="code">"Operation is not supported" code: "9"</span>.  As you can tell, this error message was not very helpful. I was completely lost until I stumbled across an <a href="http://markmail.org/message/lvmeheec6m6uawxx#query:+page:1+mid:lvmeheec6m6uawxx+state:results">old post</a> which explained that <a href="http://www.w3.org/MarkUp/2004/xhtml-faq#docwrite">XHTML does not support document.write()</a> and that best thing to do is to manually import the google analytics source file with a script tag. I implemented the suggestion and everything work beautifully. This is actually the <a href="#non-secure">technique</a> I use on my personal site.  Unfortunately this is not a universal solution.
+</p>
+<h4>Potential Problem 3: HTTPS - Unsecured content warning</h4>
+<p>
+I did not personally run into this last problem, but if you are running google analytics on a secured page, the GA snippet you use must be smart enough to dynamically switch from a <span class="code">HTTP</span> request to a <span class="code">HTTPS</span> request. The original snippet used <span class="code">document.write()</span> to achieve  this, but it turns out XHTML does not support <span class="code">document.write()</span>.  The easiest way to get around this is to use the native DOM API to dynamically create a script tag with the appropriate protocol and append it to the page's head.
+</p>
+<p>
+I've also noticed that the default snippet creates a global variable named <span class="code">pageTracker</span>.  As far as I can tell, this variable is not used anywhere.  So it seems that the <a href="#ideal">ideal snippet</a> would avoid adding this global variable.  That said, removing <span class="code">pageTracker</span> is somewhat risky, since it's possible that another services (adsense?) uses <span class="code">pageTracker</span>.
+</p>
+<p>
+It's unfortunate that google analytics didn't simple work right out of the box.  Hopefully one day the google analytics teams will fix these compatibility issues.  Then again, there might be a very good reason they implemented it the way they did.  If you have any idea why, please let me know!
+</p>
+<div id="sig">~<a href="mailto:xavi.rmz@gmail.com">Xavi</a></div>
+<div id="notes">
+<h5><a name="original">Original Snippet</a></h5>
+<pre>&lt;script type=&quot;text/javascript&quot;&gt;
+var gaJsHost = ((&quot;https:&quot; == document.location.protocol) ? &quot;https://ssl.&quot; : &quot;http://www.&quot;);
+document.write(unescape(&quot;%3Cscript src='&quot; + gaJsHost + &quot;google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E&quot;));
+&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+try {
+var pageTracker = _gat._getTracker(&quot;UA-4384857-1&quot;);
+pageTracker._trackPageview();
+} catch(err) {}&lt;/script&gt;</pre>
+<h5><a name="non-secure">Non-secure Snippet: I use this version on my site</a></h5>
+<pre>&lt;script src=&quot;http://www.google-analytics.com/ga.js&quot; type=&quot;text/javascript&quot; /&gt; 
+&lt;script type=&quot;text/javascript&quot;&gt;
+//&lt;![CDATA[
+    try { var pageTracker = _gat._getTracker(&quot;UA-4384857-1&quot;); pageTracker._trackPageview(); } catch(err) {}
+//]]&gt;
+&lt;/script&gt;</pre>
+<h5><a name="ideal">Ideal Snippet</a></h5>
+<pre>&lt;script type=&quot;text/javascript&quot;&gt;
+//&lt;![CDATA[
+    var _g = document.createElement('script');
+    _g.type = &quot;text/javascript&quot;;
+    _g.src = ((location.protocol == &quot;https:&quot;) ? &quot;https://ssl.&quot; : &quot;http://www.&quot;) + &quot;google-analytics.com/ga.js&quot;;
+    document.getElementsByTagName('head')[0].appendChild(_g);
+    try { _gat._getTracker(&quot;UA-4384857-1&quot;)._trackPageview(); } catch(err) {}
+//]]&gt;
+&lt;/script&gt;</pre>
+</div>
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/xaviramirez/embed.js"></script><noscript><a href="http://xaviramirez.disqus.com/?url=ref">View the discussion thread.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</lift:surround>

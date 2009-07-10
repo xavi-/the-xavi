@@ -1,11 +1,10 @@
 <lift:surround with="default" at="content">
-<pre>
-<![CDATA[import urllib2
+<pre>import urllib2
 import datetime
 
 def getSchedule(date, windowMinutes = 120):
-    url = """http://www.tvguide.com/listings/data/ajaxdata.ashx?"""
-    query = """srvid=80001&gridmins=%d&gridyr=%d&gridmo=%d&griddy=%d&gridhr=%d"""
+    url = &quot;&quot;&quot;http://www.tvguide.com/listings/data/ajaxdata.ashx?&quot;&quot;&quot;
+    query = &quot;&quot;&quot;srvid=80001&amp;gridmins=%d&amp;gridyr=%d&amp;gridmo=%d&amp;griddy=%d&amp;gridhr=%d&quot;&quot;&quot;
         
     parms = (windowMinutes, date.year, date.month, date.day, date.hour)
 
@@ -24,7 +23,7 @@ class episode:
     def __init__(self, rawForm):
         self.orginalForm = rawForm
         
-        rawForm = filter(lambda x: x != "", rawForm.split("\t"))
+        rawForm = filter(lambda x: x != &quot;&quot;, rawForm.split(&quot;\t&quot;))
         self.channel = int(rawForm[0])
         self.channelName = rawForm[1]
         
@@ -45,15 +44,14 @@ for episode in episodes:
         channels[channel] = []
     
     channels[channel].append(episode)
-    channels[channel].sort(lambda x, y: [-1, 1][x.dateTime > y.dateTime])
+    channels[channel].sort(lambda x, y: [-1, 1][x.dateTime &gt; y.dateTime])
 
 for channel in sorted(channels.keys()):
-    print "Channel: %d %s" % channel
+    print &quot;Channel: %d %s&quot; % channel
     
     for episode in channels[channel]:
         time = episode.dateTime
         
-        print "\t%s @ %d:%02d %s" % (episode.title, time.hour % 12, 
-                                      time.minute, ["am", "pm"][time.hour > 11])]]>
-</pre>
+        print &quot;\t%s @ %d:%02d %s&quot; % (episode.title, time.hour % 12, 
+                                      time.minute, [&quot;am&quot;, &quot;pm&quot;][time.hour &gt; 11])</pre>
 </lift:surround> 
