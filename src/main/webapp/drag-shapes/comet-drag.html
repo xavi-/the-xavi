@@ -22,30 +22,67 @@
     </style>
     <script type="text/javascript" src="/classpath/json.js" id="json"/>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"/>
-    <script type="text/javascript">
-    //<![CDATA[
-    var sendUpdate = (function() {
-        var lastSent = (new Date()).getTime();
-        
-        return function(x, y) {
-            var curTime = (new Date()).getTime();
-            
-            if(curTime - lastSent < 300) { return; }
-            
-            lastSent = curTime;
-            moveShape(x, y);
-        };
-    })();
-    
-    function addDrag() {
-        $("#shape")
-            .draggable({ containment: "#shape-container", 
-                         drag: function(e, ui) { sendUpdate(ui.position.left, ui.position.top); } })
-    }
-    //]]>
-    </script>
 </head>
 <div id="shape-container">
     <lift:comet type="CometDragDisplay"/>
 </div>
+<script type="text/javascript">
+//<![CDATA[
+    var sendUpdate = (function() {
+        var lastSent = (new Date()).getTime();
+        var queue = [];
+        
+        return function sendUpdate(x, y, forced) {
+            var curTime = (new Date()).getTime();
+            
+            if(!forced && curTime - lastSent < 50) { return; }
+            
+            if(!forced && queue.length > 0 && curTime - queue[queue.length - 1][2] < 50) { return; }
+            
+            queue.push([ x, y, curTime ]);
+            
+            if(!forced && queue.length > 0 
+                && curTime - queue[queue.length - 1][2] < 150 && curTime - lastSent < 1000) { return; }
+            
+            if(!forced && curTime - lastSent < 300) { return; }
+            
+            lastSent = curTime;
+            moveShape(queue);
+            queue = [];
+        };
+    })();
+    
+    var receiveUpdate = (function() {
+        var queue = [];
+        
+        function animator() {
+            arguments.callee.isRunning = (queue && queue.length > 0);
+            if(!arguments.callee.isRunning) { return; }
+            
+            var nextPos = queue.shift();
+            
+            $("#shape").animate({ left: nextPos.x, top: nextPos.y }, nextPos.delay, "swing", animator);
+        }
+        
+        return function receiveUpdate(points) {
+            if(!points) { return; }
+            
+            queue.push({ 'x': points[0].x, 'y': points[0].y, 'time': 100 });
+            for(var i = 1; i < points.length; i++) {
+                queue.push({ 'x': points[i].x, 'y': points[i].y, 'delay': points[i].time - points[i - 1].time });
+            }
+            
+            if(!animator.isRunning) { animator(); }
+        };
+    })();
+    
+    $(document).ready(function addDrag() {
+        $("#shape")
+            .draggable({ containment: "#shape-container",
+                         stop: function(e, ui) { sendUpdate(ui.position.left, ui.position.top); },
+                         drag: function(e, ui) { sendUpdate(ui.position.left, ui.position.top); },
+                         stop: function(e, ui) { sendUpdate(ui.position.left, ui.position.top, true); } });
+    });
+//]]>
+</script>
 </lift:surround>
