@@ -10,7 +10,7 @@
         border: 1px solid black;
     }
     
-    #shape
+    #shape-container div
     {
         position: absolute;
         width: 100px;
@@ -32,7 +32,7 @@
         var lastSent = (new Date()).getTime();
         var queue = [];
         
-        return function sendUpdate(x, y, forced) {
+        return function sendUpdate(name, x, y, forced) {
             var curTime = (new Date()).getTime();
             
             if(!forced && curTime - lastSent < 50) { return; }
@@ -47,41 +47,51 @@
             if(!forced && curTime - lastSent < 300) { return; }
             
             lastSent = curTime;
-            moveShape(queue);
+            var message = {}; message[name] = queue;
+            moveShape(message);
             queue = [];
         };
     })();
     
     var receiveUpdate = (function() {
-        var queue = [];
+        var queues = { };
         
         function animator() {
-            arguments.callee.isRunning = (queue && queue.length > 0);
-            if(!arguments.callee.isRunning) { return; }
+            arguments.callee.isRunning = false;
             
-            var nextPos = queue.shift();
+            if(!queues) { return; }
             
-            $("#shape").animate({ left: nextPos.x, top: nextPos.y }, nextPos.delay, "swing", animator);
+            for(name in queues) {
+                if(!queues[name] || queues[name].length == 0) { continue; }
+                arguments.callee.isRunning = true;
+                
+                var nextPos = queues[name].shift();
+                
+                $("#" + name).animate({ left: nextPos.x, top: nextPos.y }, nextPos.delay, "swing", animator);
+            }
         }
         
-        return function receiveUpdate(points) {
-            if(!points) { return; }
+        return function receiveUpdate(shapeUpdates) {
+            if(!shapeUpdates) { return; }
             
-            queue.push({ 'x': points[0].x, 'y': points[0].y, 'time': 100 });
-            for(var i = 1; i < points.length; i++) {
-                queue.push({ 'x': points[i].x, 'y': points[i].y, 'delay': points[i].time - points[i - 1].time });
+            for(name in shapeUpdates) {
+                var points = shapeUpdates[name];
+                if(!queues[name]) { queues[name] = []; }
+                
+                queues[name].push({ 'x': points[0].x, 'y': points[0].y, 'time': 50 });
+                for(var i = 1; i < points.length; i++) {
+                    queues[name].push({ 'x': points[i].x, 'y': points[i].y, 'delay': points[i].time - points[i - 1].time });
+                }
             }
-            
             if(!animator.isRunning) { animator(); }
         };
     })();
     
     $(document).ready(function addDrag() {
-        $("#shape")
+        $("##shape-container div")
             .draggable({ containment: "#shape-container",
-                         stop: function(e, ui) { sendUpdate(ui.position.left, ui.position.top); },
-                         drag: function(e, ui) { sendUpdate(ui.position.left, ui.position.top); },
-                         stop: function(e, ui) { sendUpdate(ui.position.left, ui.position.top, true); } });
+                         drag: function(e, ui) { sendUpdate(this.id, ui.position.left, ui.position.top); },
+                         stop: function(e, ui) { sendUpdate(this.id, ui.position.left, ui.position.top, true); } });
     });
 //]]>
 </script>

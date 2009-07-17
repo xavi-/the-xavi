@@ -13,33 +13,34 @@ import scala.Nil
 
 object isSender extends SessionVar(false)
 
-case class PlaceShape(x: Int, y: Int)
-case class MoveShape(moves: List[List[Number]])
+case class PlaceShape(places: Map[String, (Int, Int)])
+case class MoveShape(moves: Map[String, List[List[Number]]])
 case class AddListener(listener: Actor)
 
 object ShapeTracker extends Actor {
-  private var shapePos = (0, 0)
+  private var shapes = Map((1 to 5).map(x => ("shape"+x, (0,0))):_*)
   private var listeners: List[Actor] = Nil
   
   this.start
    
   def act = loop {
     react {
-      case PlaceShape(x, y) =>
-        shapePos = (x, y)
-        listeners.foreach(_ ! PlaceShape(x, y))
+      case PlaceShape(places) =>
+        shapes = places
+        listeners.foreach(_ ! PlaceShape(places))
       case MoveShape(moves) =>
-        shapePos = (moves.last(0).intValue, moves.last(1).intValue)
+        for((name, posList) <- moves) { shapes = (shapes(name) = (posList.last(0).intValue, posList.last(1).intValue)) }
         listeners.foreach(_ ! MoveShape(moves))
       case AddListener(listener) =>
         listeners ::= listener
-        listener ! PlaceShape(shapePos._1, shapePos._2)
+        listener ! PlaceShape(shapes)
+      case a => println("bad track: " + a)
     }
   }
 }
 
 class CometDragDisplay extends CometActor {
-  private var shapePos = (0, 0)
+  private var shapes: Map[String, (Int, Int)] = Map((1 to 5).map(x => ("shape"+x, (0,0))):_*)
 
   override def localSetup() {
     ShapeTracker ! AddListener(this)
@@ -48,33 +49,35 @@ class CometDragDisplay extends CometActor {
   def render =
     <xml:group>
     {
-      Script(Function("moveShape", List("points"), this.jsonCall("move", JsRaw("points"))))
+      Script(Function("moveShape", List("points"), this.jsonCall("move", JsRaw("points")))) ++
+      shapes.map(x => <div id={x._1} style={ "left: " + x._2._1 + "px; top: " + x._2._2 + "px;" }></div>)
     }
-    <div id="shape" style={ "left: " + shapePos._1 + "px; top: " + + shapePos._2 + "px;" }></div>
   	</xml:group>
     
   override def highPriority() = {
-    case PlaceShape(x, y) =>
-      shapePos = (x, y)
-
+    case PlaceShape(places) =>
+      shapes = places
       if(!isSender.get)
-    	  partialUpdate(JsRaw("$('#shape').css({left: " + x + ", top: " + y + "})"))
+    	  partialUpdate(JsRaw(places.map(x => "$('#" + x._1 + "').css({left: " + x._2._1 + ", top: " + x._2._2 + "}); ")
+                      .reduceLeft(_ + _)))
       else
         isSender(false)
     case MoveShape(moves) =>
-      shapePos = (moves.last(0).intValue, moves.last(1).intValue)
+      for((name, posList) <- moves) { shapes = (shapes(name) = (posList.last(0).intValue, posList.last(1).intValue)) }
 
       if(!isSender.get) {
-        var serial = moves.map(i => String.format("{ x: %s, y: %s, time: %s }",
-                                                  i(0).intValue.toString, i(1).intValue.toString, i(2).longValue.toString))
-    	  partialUpdate(JsRaw("receiveUpdate([" + serial.reduceLeft(_ + ", " + _) + "])"))
+        var jsMoves = JsObj(moves.toSeq.map(x =>
+                (x._1, JsArray(x._2.map(pos =>
+                        JsObj("x" -> pos(0).toString, "y" -> pos(1).toString, "time" -> pos(2).toString)):_*))):_*)
+        
+    	  partialUpdate(JsRaw("receiveUpdate(" + jsMoves + ")"))
       } else {
         isSender(false)
       }
   }
   
   override def handleJson(in: Any): JsCmd = in match {
-    case JsonCmd("move", _, moves: List[List[Number]], _) =>
+    case JsonCmd("move", _, moves: Map[String, List[List[Number]]], _) =>
       isSender(true)
       ShapeTracker ! MoveShape(moves)
       Noop
