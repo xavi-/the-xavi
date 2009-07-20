@@ -24,42 +24,42 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"/>
 </head>
 <div id="shape-container">
-    <lift:comet type="CometDragDisplay"/>
 </div>
+<lift:comet type="CometDragDisplay"/>
 <script type="text/javascript">
 //<![CDATA[
     var sendUpdate = (function() {
-        var lastSent = (new Date()).getTime();
-        var queue = [];
-        
+        var curTime = (new Date()).getTime();
+        var lastSent = curTime;
+        var lastMove = curTime;
+        var message = { };
+                
         return function sendUpdate(name, x, y, forced) {
-            var curTime = (new Date()).getTime();
+            curTime = (new Date()).getTime();
             
-            if(!forced && curTime - lastSent < 50) { return; }
+            if(!forced && curTime - lastMove < 50) { return; }
             
-            if(!forced && queue.length > 0 && curTime - queue[queue.length - 1][2] < 50) { return; }
+            lastMove = curTime
+            if(!message[name]) { message[name] = []; }
+            message[name].push([ x, y, curTime ]);
             
-            queue.push([ x, y, curTime ]);
-            
-            if(!forced && queue.length > 0 
-                && curTime - queue[queue.length - 1][2] < 150 && curTime - lastSent < 1000) { return; }
+            if(!forced && curTime - lastMove < 150 && curTime - lastSent < 1000) { return; }
             
             if(!forced && curTime - lastSent < 300) { return; }
             
             lastSent = curTime;
-            var message = {}; message[name] = queue;
             moveShape(message);
-            queue = [];
+            message = { };
         };
     })();
+    
+    var animator;
     
     var receiveUpdate = (function() {
         var queues = { };
         
-        function animator() {
+        animator = function() {
             arguments.callee.isRunning = false;
-            
-            if(!queues) { return; }
             
             for(name in queues) {
                 if(!queues[name] || queues[name].length == 0) { continue; }
@@ -69,7 +69,14 @@
                 
                 $("#" + name).animate({ left: nextPos.x, top: nextPos.y }, nextPos.delay, "swing", animator);
             }
-        }
+        };
+        animator.cancel = function cancel(name) {
+            if(!name) { return; }
+            
+            queues[name] = [];
+            $("#" + name).stop();
+            animator();
+        };
         
         return function receiveUpdate(shapeUpdates) {
             if(!shapeUpdates) { return; }
@@ -87,12 +94,22 @@
         };
     })();
     
-    $(document).ready(function addDrag() {
-        $("##shape-container div")
-            .draggable({ containment: "#shape-container",
-                         drag: function(e, ui) { sendUpdate(this.id, ui.position.left, ui.position.top); },
-                         stop: function(e, ui) { sendUpdate(this.id, ui.position.left, ui.position.top, true); } });
-    });
+    var receivePlacements = function receivePlacements(shapes) {
+        for(shape in shapes) {
+            if($("#" + shape).length == 0) { 
+                $("<div id='" + shape + "'/>")
+                    .appendTo("#shape-container")
+                    .draggable({ containment: "#shape-container",
+                                 start: function(e) { animator.cancel(this.id); },
+                                 drag: function(e, ui) { sendUpdate(this.id, ui.position.left, ui.position.top); },
+                                 stop: function(e, ui) { sendUpdate(this.id, ui.position.left, ui.position.top, true); } });
+            }
+            
+            $("#" + shape).css({ left: shapes[shape].x, top: shapes[shape].y });
+        }
+    };
+    
+    $(document).ready(getPlacements);
 //]]>
 </script>
 </lift:surround>
