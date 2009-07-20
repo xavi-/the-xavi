@@ -13,10 +13,13 @@
     #shape-container div
     {
         position: absolute;
-        width: 100px;
-        height: 100px;
-        background: green;
+        background: white;
         cursor: move;
+        border-bottom: 2px solid black;
+        border-right: 2px solid black;
+        border-top: 1px solid #AAA;
+        border-left: 1px solid #AAA;
+        padding: 0px 5px;
     }
     /*]]>*/
     </style>
@@ -98,6 +101,7 @@
         for(shape in shapes) {
             if($("#" + shape).length == 0) { 
                 $("<div id='" + shape + "'/>")
+                    .text(shapes[shape].word)
                     .appendTo("#shape-container")
                     .draggable({ containment: "#shape-container",
                                  start: function(e) { animator.cancel(this.id); },
