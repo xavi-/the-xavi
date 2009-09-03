@@ -1,0 +1,71 @@
+<lift:surround bind="default" at="content">
+<div id="chatroom">
+<lift:ChatroomUI>
+    <head>
+        <title><chat:title/></title>
+        <style>/*<![CDATA[*/
+        .chat-container {
+            width: 200px;
+        }
+        
+        .chat {
+            height: 300px;
+            border: 1px solid black;
+        }
+        
+        .enterName {
+            cursor: pointer;
+            border: thin solid #770077;
+            border-left: thin solid #FF00FF;
+            border-top: thin solid #FF00FF;
+            background-color: #FFCCFF;
+            padding: 0px 5px;
+            text-align: center;
+        }
+                
+        #reply input {
+            margin: 0px;
+            border: 1px solid black;
+            display: block;
+            width: auto;
+        }
+        /*]]>*/
+        </style>
+    </head>
+    <div class="chat-container">
+        <div class="chat"><lift:comet type="ChatClient" chat:name="default" /></div>
+        <div class="reply">
+        <chat:reply>
+            <ch:sendLine><input class="sendLine" type="text" /></ch:sendLine>
+            <ch:enterName><div class="enterName">Click to join</div></ch:enterName>
+        </chat:reply>
+        </div>
+    </div>
+</lift:ChatroomUI>
+</div>
+<script type="text/javascript"> //<![CDATA[
+$(function() {
+    $(".sendLine").live("keydown", function(e) {
+        if(e.which == 13 && $(this).val()) { 
+            sendLine($(this).val());
+            $(this).val(""); 
+        } 
+    });
+    
+    $(".enterName").click(function() { 
+        var name = window.prompt("Enter Name");
+        
+        if(name) { 
+            enterName(name, function(goodName) { 
+                if(!goodName) { return; }
+                
+                $("<input class='sendLine' type='text' />")
+                    .replaceAll("div.reply div.enterName")
+                    .focus();
+            });
+        }
+    });
+});
+//]]>
+</script>
+</lift:surround>

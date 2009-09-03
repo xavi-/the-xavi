@@ -15,6 +15,7 @@ case class BroadcastPlaces(senderId: String)
 case class ShapePlaces(senderId: String, places: Map[String, (Int, Int, String)])
 case class MoveShapes(senderId: String, moves: Map[String, List[List[Number]]])
 case class AddListener(listener: Actor)
+case class RemoveListener(listener: Actor)
 
 object ShapeTracker extends Actor {
   private val words = List("Senior", "Chief", "Vice", "Lead", "Director", "Manager", "Principle", "Executive",
@@ -25,7 +26,7 @@ object ShapeTracker extends Actor {
                            "Strategy", "Synergy", "Professional", "Liaison", "Consultant", "Specialist", "Operations",
                            "Engineer", "Evangelist", "and", "and", "Security", "Creative")
   private val rand = new java.util.Random
-  private var shapes = Map((0 to 49).map(x => ("shape"+x, (rand.nextInt(430), rand.nextInt(480), words(x)))):_*)
+  private var shapes = Map((0 until words.length).map(x => ("word"+x, (rand.nextInt(430), rand.nextInt(480), words(x)))):_*)
   private var listeners: List[Actor] = Nil
 
   this.start
@@ -41,6 +42,8 @@ object ShapeTracker extends Actor {
         listeners.foreach(_ ! MoveShapes(senderId, moves))
       case AddListener(listener) =>
         listeners ::= listener
+      case RemoveListener(listener) =>
+        listeners -= listener
       case a => println("bad track: " + a)
     }
   }
@@ -49,6 +52,10 @@ object ShapeTracker extends Actor {
 class CometDragDisplay extends CometActor {
   override def localSetup() {
     ShapeTracker ! AddListener(this)
+  }
+
+  override def localShutdown() {
+    ShapeTracker ! RemoveListener(this)
   }
 
   override def render =

@@ -1,0 +1,8 @@
+<lift:surround bind="default" at="content">
+    <div>
+        What chatroom would you like to enter?: <input id="chat-room-name" type="text" />
+    </div>
+<script>
+    $("#chat-room-name").keydown(function(e) { if(e.which == 13) { window.location = "/chat/" + $(this).val(); } });
+</script>
+</lift:surround>
