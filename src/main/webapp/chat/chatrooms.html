@@ -11,6 +11,7 @@
         .chat {
             height: 300px;
             border: 1px solid black;
+            padding: 0px 4px;
         }
         
         .enterName {
@@ -22,12 +23,16 @@
             padding: 0px 5px;
             text-align: center;
         }
-                
-        #reply input {
-            margin: 0px;
+        
+        .reply {
             border: 1px solid black;
+        }
+        
+        .reply input {
+            margin: 0px;
             display: block;
-            width: auto;
+            border: 0px solid black;
+            width: 100%;
         }
         /*]]>*/
         </style>
@@ -53,16 +58,14 @@ $(function() {
     });
     
     $(".enterName").click(function() { 
-        var name = window.prompt("Enter Name");
+        var name = window.prompt("Enter your name");
         
         if(name) { 
-            enterName(name, function(goodName) { 
-                if(!goodName) { return; }
+            enterName(name);
                 
-                $("<input class='sendLine' type='text' />")
-                    .replaceAll("div.reply div.enterName")
-                    .focus();
-            });
+            $("<input class='sendLine' type='text' />")
+                .replaceAll("div.reply div.enterName")
+                .focus();
         }
     });
 });
