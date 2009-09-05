@@ -19,14 +19,15 @@ class ChatroomUI {
 
     def sendLine(user: String) =
       Function("sendLine", List("line"),
-                          ajaxCall(JsRaw("line"),
-                                   s => { if(s != "") { UserInfo.is.chat(roomName) ! SendLine(user + ": " + s) } ; Noop })._2)
+               ajaxCall(JsRaw("line"),
+                        s => { if(s != "") { ChatManager.rooms(roomName) ! SendLine(user + ": " + s) } ; Noop })._2)
+    
     bind("chat", xml,
       AttrBindParam("name", Text(roomName), "name"),
       "title" -> S.param("name").openOr(""),
       "reply" -> { (x: NodeSeq) =>
         UserInfo.is.user match {
-          case Full(user) => <xml:group> { chooseTemplate("ch", "sendLine", xml) ++ Script(sendLine(user)) }</xml:group>
+          case Full(user) => <xml:group>{ chooseTemplate("ch", "sendLine", xml) ++ Script(sendLine(user)) }</xml:group>
           case _ =>
             <xml:group>{
               chooseTemplate("ch", "enterName", xml) ++
@@ -35,7 +36,12 @@ class ChatroomUI {
                                        u => { UserInfo.is.user = Box.!!(u) ; sendLine(u) })._2))
             }</xml:group>
         }
-      }
+      },
+      "unload-code" -> Script(Function("shutDown", Nil,
+                                       ajaxInvoke(() => { if (UserInfo.is.chatClients.contains(roomName)) { 
+                                                            UserInfo.is.chatClients(roomName) ! ShutDown
+                                                          }
+                                                          Noop })._2))
     )
   }
 }

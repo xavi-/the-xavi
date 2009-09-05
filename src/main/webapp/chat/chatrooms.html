@@ -12,6 +12,7 @@
             height: 300px;
             border: 1px solid black;
             padding: 0px 4px;
+            overflow: auto;
         }
         
         .enterName {
@@ -46,6 +47,7 @@
         </chat:reply>
         </div>
     </div>
+    <chat:unload-code />
 </lift:ChatroomUI>
 </div>
 <script type="text/javascript"> //<![CDATA[
@@ -54,6 +56,7 @@ $(function() {
         if(e.which == 13 && $(this).val()) { 
             sendLine($(this).val());
             $(this).val(""); 
+            $(".chat").scrollTop($(".chat").height());
         } 
     });
     
@@ -68,6 +71,8 @@ $(function() {
                 .focus();
         }
     });
+    
+    $(window).unload(shutDown);
 });
 //]]>
 </script>

@@ -3,30 +3,38 @@ package net.lift.theXavi.comet
 import net.liftweb._
 import http._
 import util._
+import Helpers._
 
 import scala.actors._
 import scala.actors.Actor._
 
-import scala.collection.mutable.{Map}
-
 object UserInfo extends SessionVar[ChatInfo](new ChatInfo)
-class ChatInfo { var chat: Map[String, Actor] = Map(); var user: Box[String] = Empty }
+class ChatInfo { var chatClients: Map[String, ChatClient] = Map(); var user: Box[String] = Empty }
 
+case class GarbageCollect
 case class AddClient(name: String, client: ChatClient)
 case class RemoveClient(name: String, client: ChatClient)
 
 object ChatManager extends Actor {
-  private var rooms: Map[String, ChatRoom] = Map()
+  var rooms: Map[String, ChatRoom] = Map()
 
   this.start
-
+  ActorPing.scheduleAtFixedRate(this, GarbageCollect, 10 seconds, 10 seconds)
+  
   def act = loop {
     react {
       case AddClient(name, client) =>
-        if(!rooms.contains(name)) { rooms(name) = new ChatRoom(name) }
+        if(!rooms.contains(name)) { rooms += name -> new ChatRoom(name) }
         rooms(name) ! AddClient(name, client)
       case RemoveClient(name, client) =>
         rooms(name) ! RemoveClient(name, client)
+      case GarbageCollect =>
+        println("\n\nGarbage Collecting!!")
+        rooms foreach ( pair => if(pair._2.clients.size == 0) { 
+                                  println("Closed room: " + pair._1)
+                                  pair._2 ! ShutDown
+                                  rooms -= pair._1
+                                } )
     }
   }
 }
@@ -34,7 +42,7 @@ object ChatManager extends Actor {
 case class SendRoom(room: ChatRoom, lines: List[String])
 case class SendLine(lines: String)
 class ChatRoom(val name: String) extends Actor {
-  private var clients: List[ChatClient] = Nil
+  var clients: List[ChatClient] = Nil
   private var lines: List[String] = Nil
 
   this.start
@@ -44,7 +52,7 @@ class ChatRoom(val name: String) extends Actor {
       case AddClient(_, client) =>
         clients ::= client
         client ! SendRoom(this, lines)
-      case RemoveClient(_, client) =>
+      case RemoveClient(_, client) => 
         clients = clients.filter(_ != client)
       case SendLine(line) =>
         this.lines = (line :: lines).take(20)
@@ -53,15 +61,20 @@ class ChatRoom(val name: String) extends Actor {
   }
 }
 
-
 class ChatClient extends CometActor {
-  var lines: List[String] = Nil
-  var room: ChatRoom = null
+  private lazy val _name = this.name.openOr("")
+  private var lines: List[String] = Nil
+  private var room: ChatRoom = null
 
   override def localSetup() {
-    ChatManager ! AddClient(this.name.openOr(""), this)
+    ChatManager ! AddClient(_name, this)
   }
-  
+
+  override def localShutdown() { println("\n shutting down chat client")
+    ChatManager ! RemoveClient(_name, this)
+    UserInfo.is.chatClients -= _name
+  }
+
   override def render =
     <div id="chat">{ lines.reverse.flatMap(l => <span class="line">{ l }</span><br/>) }</div>
 
@@ -69,7 +82,7 @@ class ChatClient extends CometActor {
     case SendRoom(room, lines) =>
       this.room = room
       this.lines = lines
-      UserInfo.is.chat(this.name.openOr("")) = room
+      UserInfo.is.chatClients += _name -> this
       reRender(true)
     case SendLine(line) =>
       this.lines = line :: lines
