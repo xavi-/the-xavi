@@ -8,8 +8,7 @@ import Helpers._
 import scala.actors._
 import scala.actors.Actor._
 
-object UserInfo extends SessionVar[ChatInfo](new ChatInfo)
-class ChatInfo { var chatClients: Map[String, ChatClient] = Map(); var user: Box[String] = Empty }
+object UserName extends SessionVar[Option[String]](None)
 
 case class GarbageCollect
 case class AddClient(name: String, client: ChatClient)
@@ -19,7 +18,7 @@ object ChatManager extends Actor {
   var rooms: Map[String, ChatRoom] = Map()
 
   this.start
-  ActorPing.scheduleAtFixedRate(this, GarbageCollect, 10 seconds, 10 seconds)
+  ActorPing.scheduleAtFixedRate(this, GarbageCollect, 10 minutes, 10 minutes)
   
   def act = loop {
     react {
@@ -34,7 +33,7 @@ object ChatManager extends Actor {
                                   println("Closed room: " + pair._1)
                                   pair._2 ! ShutDown
                                   rooms -= pair._1
-                                } )
+                                } else { println("Open room: " + pair._1 + "; count: " + pair._2.clients.size) })
     }
   }
 }
@@ -70,9 +69,8 @@ class ChatClient extends CometActor {
     ChatManager ! AddClient(_name, this)
   }
 
-  override def localShutdown() { println("\n shutting down chat client")
+  override def localShutdown() { println("\n shutting down chat client: " + _name)
     ChatManager ! RemoveClient(_name, this)
-    UserInfo.is.chatClients -= _name
   }
 
   override def render =
@@ -82,7 +80,6 @@ class ChatClient extends CometActor {
     case SendRoom(room, lines) =>
       this.room = room
       this.lines = lines
-      UserInfo.is.chatClients += _name -> this
       reRender(true)
     case SendLine(line) =>
       this.lines = line :: lines

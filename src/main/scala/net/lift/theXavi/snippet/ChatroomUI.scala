@@ -26,21 +26,21 @@ class ChatroomUI {
       AttrBindParam("name", Text(roomName), "name"),
       "title" -> S.param("name").openOr(""),
       "reply" -> { (x: NodeSeq) =>
-        UserInfo.is.user match {
-          case Full(user) => <xml:group>{ chooseTemplate("ch", "sendLine", xml) ++ Script(sendLine(user)) }</xml:group>
-          case _ =>
+        UserName.is match {
+          case Some(user) => <xml:group>{ chooseTemplate("ch", "sendLine", xml) ++ Script(sendLine(user)) }</xml:group>
+          case None =>
             <xml:group>{
               chooseTemplate("ch", "enterName", xml) ++
               Script(Function("enterName", List("userName"),
                               ajaxCall(JsRaw("userName"),
-                                       u => { UserInfo.is.user = Box.!!(u) ; sendLine(u) })._2))
+                                       u => { UserName.set(Some(u)) ; sendLine(u) })._2))
             }</xml:group>
         }
       },
       "unload-code" -> Script(Function("shutDown", Nil,
-                                       ajaxInvoke(() => { if (UserInfo.is.chatClients.contains(roomName)) { 
-                                                            UserInfo.is.chatClients(roomName) ! ShutDown
-                                                          }
+                                       ajaxInvoke(() => { S.session.foreach(_.findComet("ChatClient")
+                                                                             .filter(_.name == roomName)
+                                                                             .foreach(_ ! ShutDown))
                                                           Noop })._2))
     )
   }
