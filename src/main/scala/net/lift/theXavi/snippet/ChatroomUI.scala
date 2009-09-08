@@ -32,8 +32,7 @@ class ChatroomUI {
             <xml:group>{
               chooseTemplate("ch", "enterName", xml) ++
               Script(Function("enterName", List("userName"),
-                              ajaxCall(JsRaw("userName"),
-                                       u => { UserName.set(Some(u)) ; sendLine(u) })._2))
+                              ajaxCall(JsRaw("userName"), u => { UserName.set(Some(u)) ; sendLine(u) })._2))
             }</xml:group>
         }
       },

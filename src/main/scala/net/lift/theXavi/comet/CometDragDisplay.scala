@@ -37,7 +37,7 @@ object ShapeTracker extends Actor {
         listeners.foreach(_ ! ShapePlaces(senderId, shapes))
       case MoveShapes(senderId, moves) =>
         for((name, posList) <- moves) {
-          shapes = (shapes(name) = (posList.last(0).intValue, posList.last(1).intValue, shapes(name)._3))
+          shapes += name -> (posList.last(0).intValue, posList.last(1).intValue, shapes(name)._3)
         }
         listeners.foreach(_ ! MoveShapes(senderId, moves))
       case AddListener(listener) =>
