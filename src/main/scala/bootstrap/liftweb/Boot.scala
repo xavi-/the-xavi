@@ -4,7 +4,6 @@ import _root_.net.liftweb.util._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.sitemap._
 import _root_.net.liftweb.sitemap.Loc._
-import Helpers._
 
 class Boot {
   def boot {

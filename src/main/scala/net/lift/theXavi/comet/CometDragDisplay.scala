@@ -4,12 +4,10 @@ import net.liftweb._
 import http._
 import js._
 import JsCmds._
-
-import net.liftweb.http.js.JE._
+import JE._
 
 import scala.actors._
 import scala.actors.Actor._
-import scala.Nil
 
 case class BroadcastPlaces(senderId: String)
 case class ShapePlaces(senderId: String, places: Map[String, (Int, Int, String)])
