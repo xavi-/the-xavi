@@ -2,6 +2,7 @@ package net.lift.theXavi.comet
 
 import net.liftweb._
 import http._
+import util._
 import js._
 import JsCmds._
 import JE._

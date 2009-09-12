@@ -2,14 +2,13 @@ package net.lift.theXavi.comet
 
 import net.liftweb._
 import http._
+import util._
 import js._
 import JsCmds._
-
-import net.liftweb.http.js.JE._
+import JE._
 
 import scala.actors._
 import scala.actors.Actor._
-import scala.Nil
 
 case class PiecePlaces(senderId: String, places: Map[String, (Int, Int, JsArray)])
 case class MovePieces(senderId: String, moves: Map[String, List[List[Number]]])
