@@ -65,6 +65,8 @@ class ChatClient extends CometActor {
   private var lines: List[String] = Nil
   private var room: ChatRoom = null
 
+  override def lifespan = Full(2 minutes)
+
   override def localSetup() {
     ChatManager ! AddClient(_name, this)
   }
