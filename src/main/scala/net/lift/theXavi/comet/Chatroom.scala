@@ -65,8 +65,6 @@ class ChatClient extends CometActor {
   private var lines: List[String] = Nil
   private var room: ChatRoom = null
 
-  override def lifespan = Full(2 minutes)
-
   override def localSetup() {
     ChatManager ! AddClient(_name, this)
   }
@@ -76,7 +74,7 @@ class ChatClient extends CometActor {
   }
 
   override def render =
-    <div id="chat">{ lines.reverse.flatMap(l => <span class="line">{ l }</span><br/>) }</div>
+    <div id="chat">{ lines.reverse.flatMap(l => <div class="line">{ l }</div>) }</div>
 
   override def highPriority = {
     case SendRoom(room, lines) =>
