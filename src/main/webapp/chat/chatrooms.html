@@ -14,9 +14,9 @@
         position: absolute;
         top: 0;
         left: 0;
-        padding-bottom: 23px;
+        padding-bottom: 26px;
     }
-    .line { float: left; clear: both; }
+    .line { font-size: 16px; }
     #chat { overflow: hidden; }
     .chat-text {
         height: 100%;
@@ -31,8 +31,8 @@
         border-left: thin solid #FF00FF;
         border-top: thin solid #FF00FF;
         background-color: #FFCCFF;
-        padding: 0px 5px;
         text-align: center;
+        height: 20px;
     }
     
     .reply {
@@ -44,7 +44,8 @@
         display: block;
         border: 0px solid black;
         width: 100%;
-        height: 17px;
+        height: 20px;
+        font-size: 15px;
     }
     /*]]>*/
     </style>
@@ -53,7 +54,7 @@
 <lift:ChatroomUI>
     <head><title><chat:title/></title></head>
     <div class="chat">
-    <div class="chat-text"><lift:comet type="ChatClient" chat:name="default" /></div>
+    <div class="chat-text"><chat:chat-text /></div>
     <div class="reply">
         <chat:reply>
             <ch:sendLine><input class="sendLine" type="text" /></ch:sendLine>
@@ -61,14 +62,19 @@
         </chat:reply>
     </div>
     </div>
+<lift:comet type="ChatClient" chat:name="default" />
 </lift:ChatroomUI>
 <script type="text/javascript"> //<![CDATA[
+var ch = {};
+
 $(function() {
     $(".sendLine").live("keydown", function(e) {
-        if(e.which == 13 && $(this).val()) { 
-            sendLine($(this).val());
+        var line = $(this).val();
+        
+        if(e.which == 13 && line) { 
+            sendLine(line);
+            addLine(user, line);
             $(this).val(""); 
-            $(".chat").scrollTop($(".chat").height());
         } 
     });
     
@@ -84,6 +90,12 @@ $(function() {
         }
     });
 });
+function addLine(user, line) {
+    $("<div class='line' />")
+        .text(user + ": " + line)
+        .appendTo("div.chat-text");
+    $("div.chat-text").scrollTop($("div.chat-text").height());
+}
 //]]>
 </script>
 </body>

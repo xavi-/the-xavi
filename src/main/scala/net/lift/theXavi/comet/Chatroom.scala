@@ -4,7 +4,11 @@ import net.liftweb._
 import http._
 import util._
 import Helpers._
+import js._
+import JsCmds._
+import JE._
 
+import scala.xml._
 import scala.actors._
 import scala.actors.Actor._
 
@@ -38,11 +42,10 @@ object ChatManager extends Actor {
   }
 }
 
-case class SendRoom(room: ChatRoom, lines: List[String])
-case class SendLine(lines: String)
+case class AddLine(user: String, lines: String)
 class ChatRoom(val name: String) extends Actor {
   var clients: List[ChatClient] = Nil
-  private var lines: List[String] = Nil
+  var lines: List[(String, String)] = Nil
 
   this.start
   
@@ -50,39 +53,28 @@ class ChatRoom(val name: String) extends Actor {
     react {
       case AddClient(_, client) =>
         clients ::= client
-        client ! SendRoom(this, lines)
       case RemoveClient(_, client) => 
         clients = clients.filter(_ != client)
-      case SendLine(line) =>
-        this.lines = (line :: lines).take(20)
-        clients.foreach(_ ! SendLine(line))
+      case AddLine(user, line) =>
+        this.lines = ((user, line) :: lines).take(20)
+        clients.foreach(_ ! AddLine(user, line))
     }
   }
 }
 
 class ChatClient extends CometActor {
-  private lazy val _name = this.name.openOr("")
-  private var lines: List[String] = Nil
-  private var room: ChatRoom = null
-
   override def localSetup() {
-    ChatManager ! AddClient(_name, this)
+    ChatManager ! AddClient(this.name.openOr(""), this)
   }
 
-  override def localShutdown() { println("\n shutting down chat client: " + _name)
-    ChatManager ! RemoveClient(_name, this)
+  override def localShutdown() { println("\n shutting down chat client: " + this.name.openOr(""))
+    ChatManager ! RemoveClient(this.name.openOr(""), this)
   }
 
-  override def render =
-    <div id="chat">{ lines.reverse.flatMap(l => <div class="line">{ l }</div>) }</div>
+  def render = NodeSeq.Empty
 
   override def highPriority = {
-    case SendRoom(room, lines) =>
-      this.room = room
-      this.lines = lines
-      reRender(true)
-    case SendLine(line) =>
-      this.lines = line :: lines
-      reRender(true)
+    case AddLine(user, line) =>
+      if(user != UserName.is.getOrElse("")) { partialUpdate(Call("addLine", user, line)) }
   }
 }
