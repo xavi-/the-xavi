@@ -76,7 +76,8 @@ $(function() {
             addLine(user, line);
             $(this).val(""); 
         } 
-    });
+    })
+    .focus();
     
     $(".enterName").click(function() { 
         var name = window.prompt("Enter your name");
