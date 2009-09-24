@@ -16,8 +16,12 @@
         left: 0;
         padding-bottom: 26px;
     }
-    .line { font-size: 16px; }
-    #chat { overflow: hidden; }
+    
+    .line { 
+        font-size: 16px; 
+        font-family: sans-serif;
+    }
+    
     .chat-text {
         height: 100%;
         border: 1px solid black;
@@ -82,7 +86,8 @@ $(function() {
     $(".enterName").click(function() { 
         var name = window.prompt("Enter your name");
         
-        if(name) { 
+        if(name) {
+            document.cookie = "name=" + name + "; path=/";
             enterName(name);
                 
             $("<input class='sendLine' type='text' />")

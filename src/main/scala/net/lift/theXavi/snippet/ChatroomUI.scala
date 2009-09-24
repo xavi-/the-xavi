@@ -12,11 +12,13 @@ import JE._
 
 import scala.xml._
 import net.lift.theXavi.comet._
+import net.liftweb.http.provider.HTTPCookie
 
 class ChatroomUI {
   def render(xml: NodeSeq): NodeSeq = {
     val roomName = S.param("name").openOr("").toLowerCase
-
+    println("name: " + S.findCookie("name").map(_.value openOr ""))
+    UserName.set(S.findCookie("name").map(_.value openOr ""))
     def sendLine(user: String) =
       JsCrVar("user", user) &
       Function("sendLine", List("line"),
@@ -36,7 +38,9 @@ class ChatroomUI {
             <xml:group>{
               chooseTemplate("ch", "enterName", x) ++
               Script(Function("enterName", List("userName"),
-                              ajaxCall(JsRaw("userName"), u => { UserName.set(Some(u)) ; sendLine(u) })._2))
+                              ajaxCall(JsRaw("userName"), u => { UserName.set(Some(u)) 
+                                                                 S.addCookie(HTTPCookie("name", u))
+                                                                 sendLine(u) })._2))
             }</xml:group>
         }
       },
