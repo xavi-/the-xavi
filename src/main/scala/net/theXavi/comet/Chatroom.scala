@@ -1,4 +1,4 @@
-package net.lift.theXavi.comet
+package net.theXavi.comet
 
 import net.liftweb._
 import http._

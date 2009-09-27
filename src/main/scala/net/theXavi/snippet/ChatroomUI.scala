@@ -1,4 +1,4 @@
-package net.lift.theXavi.snippet
+package net.theXavi.snippet
 
 import net.liftweb._
 
@@ -11,14 +11,15 @@ import JsCmds._
 import JE._
 
 import scala.xml._
-import net.lift.theXavi.comet._
+import net.theXavi.comet._
 import net.liftweb.http.provider.HTTPCookie
 
 class ChatroomUI {
   def render(xml: NodeSeq): NodeSeq = {
     val roomName = S.param("name").openOr("").toLowerCase
-    println("name: " + S.findCookie("name").map(_.value openOr ""))
+
     UserName.set(S.findCookie("name").map(_.value openOr ""))
+
     def sendLine(user: String) =
       JsCrVar("user", user) &
       Function("sendLine", List("line"),
@@ -43,12 +44,7 @@ class ChatroomUI {
                                                                  sendLine(u) })._2))
             }</xml:group>
         }
-      },
-      "unload-code" -> Script(Function("shutDown", Nil,
-                                       ajaxInvoke(() => { S.session.foreach(_.findComet("ChatClient")
-                                                                             .filter(_.name == roomName)
-                                                                             .foreach(_ ! ShutDown))
-                                                          Noop })._2))
+      }
     )
   }
 }

@@ -8,7 +8,7 @@ import _root_.net.liftweb.sitemap.Loc._
 class Boot {
   def boot {
     // where to search snippet
-    LiftRules.addToPackages("net.lift.theXavi")
+    LiftRules.addToPackages("net.theXavi")
     
     LiftRules.uriNotFound.prepend{
       case (req, _) => PermRedirectResponse("404", req)
