@@ -1,7 +1,6 @@
 package net.theXavi.snippet
 
 import net.liftweb._
-
 import http._
 import util._
 import Helpers._

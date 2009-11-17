@@ -62,14 +62,10 @@ class CometDragDisplay extends CometActor {
            Function("getPlacements", Nil, this.jsonCall("places")))
 
   override def highPriority() = {
-    case ShapePlaces(senderId, places) =>
-      if(senderId != this.uniqueId) { continue }
-
+    case ShapePlaces(senderId, places) if(senderId == this.uniqueId) =>
       val jsPlaces = JsObj(places.toSeq.map(x => (x._1, JsObj("x" -> x._2._1, "y" -> x._2._2, "word" -> x._2._3))):_*)
       partialUpdate(Call("receivePlacements", jsPlaces))
-    case MoveShapes(senderId, moves) =>
-      if(senderId == this.uniqueId) { continue }
-
+    case MoveShapes(senderId, moves) if(senderId != this.uniqueId) =>
       val jsMoves = JsObj(moves.toSeq.map(x =>
               (x._1, JsArray(x._2.map(pos
                       => JsObj("x" -> pos(0).intValue, "y" -> pos(1).intValue, "time" -> pos(2).longValue)):_*))):_*)
