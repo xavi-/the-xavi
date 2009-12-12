@@ -10,6 +10,9 @@ import JE._
 import scala.actors._
 import scala.actors.Actor._
 
+case class BroadcastPlaces(senderId: String)
+case class AddListener(listener: Actor)
+case class RemoveListener(listener: Actor)
 case class PiecePlaces(senderId: String, places: Map[String, (Int, Int, JsArray)])
 case class MovePieces(senderId: String, moves: Map[String, List[List[Number]]])
 

@@ -12,7 +12,6 @@ import JSONParser._
 import scala.actors._
 import scala.actors.Actor._
 
-
 case class ApplyOperations(senderId: Int, transId: Int, operations: List[Map[String, Any]])
 
 object OperationsCoord extends Actor {
@@ -147,11 +146,11 @@ println("\n\n text: " + text + "\n")
 
 class OperationsDisplay extends CometActor {
   override def localSetup() {
-    ShapeTracker ! AddListener(this)
+    OperationsCoord ! AddListener(this)
   }
 
   override def localShutdown() {
-    ShapeTracker ! RemoveListener(this)
+    OperationsCoord ! RemoveListener(this)
   }
 
   override def render = scala.xml.NodeSeq.Empty
