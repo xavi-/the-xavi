@@ -22,8 +22,6 @@ class Boot {
     
     // Build SiteMap
     val pages = Menu(Loc("Home", List("index"), "Home")) ::
-                Menu(Loc("Quick Chat", List("chat", "index"), "Quick Chat"),
-                    Menu(Loc("Chatrooms", List("chat", "chatrooms"), "Chatrooms", Hidden))) ::
                 Menu(Loc("Magnetic Poetry", List("magnetic-poetry"), "Magnetic Poetry")) ::
                 Menu(Loc("Drag Shapes", List("drag-shapes", "index"), "Drag Shapes"),
                     Menu(Loc("Comet Drag", List("drag-shapes", "comet-drag"), "Comet Drag")),
