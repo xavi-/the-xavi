@@ -13,12 +13,6 @@ class Boot {
     LiftRules.uriNotFound.prepend{
       case (req, _) => PermRedirectResponse("404", req)
     }
-
-    LiftRules.rewrite.append{
-      case RewriteRequest(ParsePath("chat" :: name :: Nil, _, _, _), _, _)
-        if(name != "index" && name != "chatrooms") =>
-          RewriteResponse("chat" :: "chatrooms" :: Nil, Map("name" -> name))
-    }
     
     // Build SiteMap
     val pages = Menu(Loc("Home", List("index"), "Home")) ::
