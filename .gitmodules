@@ -1,0 +1,6 @@
+[submodule "libraries/markdown-js"]
+	path = libraries/markdown-js
+	url = http://github.com/evilstreak/markdown-js.git
+[submodule "libraries/bind-js"]
+	path = libraries/bind-js
+	url = git://github.com/Xavi-/bind-js.git
