@@ -1,4 +1,4 @@
-<lift:surround with="default" at="content">
+(: #:title:# ~ TV-schedule downloader :)
 <pre>import urllib2
 import datetime
 
@@ -54,4 +54,3 @@ for channel in sorted(channels.keys()):
         
         print &quot;\t%s @ %d:%02d %s&quot; % (episode.title, time.hour % 12, 
                                       time.minute, [&quot;am&quot;, &quot;pm&quot;][time.hour &gt; 11])</pre>
-</lift:surround> 

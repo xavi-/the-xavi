@@ -1,24 +1,22 @@
-<lift:surround with="default" at="content">
-<head>
-<title>Rotate image with JavaScript</title>
-<style type="text/css">
-/*<![CDATA[*/
-img
-{
-    filter:progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand');
-    position: absolute;
-}
+(: #:title:# ~ Rotate image with JavaScript :)
+(: #:head:# ~
+	<style type="text/css">
+	/*<![CDATA[*/
+	img
+	{
+	    filter:progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand');
+	    position: absolute;
+	}
 
-div
-{
-    postion: relative;
-}
-/*]]>*/
-</style>
-</head>
-    <img id="aDiv" src="/pics/rotate-image/halo-dude.jpg"/>
-    <div id="angle"></div>
-    <a href="http://github.com/Xavi-/rotate-picture/tree/master">Git Hub</a>
+	div
+	{
+	    postion: relative;
+	}
+	/*]]>*/
+	</style> :)
+<img id="aDiv" src="/pics/rotate-image/halo-dude.jpg"/>
+<div id="angle"></div>
+<a href="http://github.com/Xavi-/rotate-picture/tree/master">Git Hub</a>
 <script  type="text/javascript">
 //<![CDATA[
 var rotatable = {};
@@ -148,4 +146,3 @@ var rotatable = {};
 })();
 //]]>
 </script>
-</lift:surround>

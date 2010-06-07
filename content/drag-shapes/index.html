@@ -1,6 +1,5 @@
-<lift:surround with="default" at="content">
-<head>
-<title>drag-drop-irregular-shapes</title>
+(: #:title:# ~ drag-drop-irregular-shapes :)
+(: #:head:# ~
 <style type="text/css" media="screen">
 /*<![CDATA[*/
     #board, 
@@ -50,8 +49,7 @@
         background: blue;
     }
 /*]]>*/
-</style>
-</head>
+</style> :)
 <span>Drag and drop the pieces to make a diamond</span>
 <div id="board">
     <img id="board-screen" alt="board" src="/pics/drag-shapes/transparent.gif" usemap="#board-def" />
@@ -95,7 +93,12 @@
 </div>
 
 <a href="http://github.com/Xavi-/Drag-Shapes/tree/master">Git Hub</a>
-
+<ul>
+	<li><a href="/drag-shapes/comet-drag">Comet Drag</a></li>
+	<li><a href="/drag-shapes/get-the-goal">Get the Goal</a></li>
+	<li><a href="/drag-shapes/rotate-image">Rotate Image</a></li>
+	<li><a href="/drag-shapes/slanted-box">Slanted Box</a></li>
+</ul>
 <script type="text/javascript">
 //<![CDATA[
 var x = {};
@@ -636,4 +639,3 @@ var x = {};
 })();
 //]]>
 </script>
-</lift:surround>

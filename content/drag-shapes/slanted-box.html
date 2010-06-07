@@ -1,5 +1,5 @@
-<lift:surround with="default" at="content">
-<head>
+(: #:title:# ~ Slanted Box :)
+(: #:head:# ~
   <style type="text/css">
     #slant-box
     {
@@ -79,10 +79,8 @@
       return (weight.w > 0 && weight.h > 0) && (weight.w <= det && weight.h <= det);
     }
   //]]>
-  </script>
-</head>
+  </script> :)
 <div id="text-box">mouse not in slant</div>
 <div id="slant-box" onmousemove="clickCatcher(event)">
 There's an invisible slant 
 </div>
-</lift:surround>

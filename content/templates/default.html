@@ -1,28 +1,30 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:lift="http://liftweb.net/">
+<html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="description" content="This is Xavi Ramirez personal page." />
     <meta name="keywords" content="Xavi Ramirez" />
     <link rel="icon" type="image/png" href="http://www.gravatar.com/avatar/4df1cfae6e8c7fbdb013818785318aa7?s=16" />
     
+    <title>Xavi - #:title:#</title>
     <style>
     /*<![CDATA[*/
         #content { display: table; }
         #menu { clear: both; }
     /*]]>*/
     </style>
+    #:head:#
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"/>
 </head>
 <body>
-    <h1><span>Site of Xavi</span></h1>
-    <div id="content">
-        <lift:bind name="content" />
-    </div>
-    <div id="menu">
-        <h3>Menu</h3>
-        <lift:Menu.builder />
-    </div>
-    <lift:msgs/>
+	
+<div id="content">
+	(: content ~ [: file ~ 404.html :] :)
+</div>
+
+<div id="menu">
+	(: file ~ ./content/templates/links.html :)
+</div>
+
 <script type="text/javascript">
 //<![CDATA[
     var _gaq = _gaq || [];

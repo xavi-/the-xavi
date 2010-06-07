@@ -1,7 +1,5 @@
-<lift:surround with="default" at="content">
-<head>
-<title>Visual Sorts</title>
-<style type="text/css">
+(: #:title:# ~ Visual Sorts :)
+(: #:head:# ~ <style type="text/css">
 <![CDATA[
     #sorts
     {
@@ -47,8 +45,7 @@
         text-align: center;
     }
 ]]>
-</style>
-</head>
+</style> :)
 <div id="sorts">
     <div class="sort">
         <div id="bubble"></div>
@@ -501,4 +498,3 @@ sort.createSortDisplay = function(id, recordableArray, sorter)
 })();
 //]]>
 </script>
-</lift:surround>

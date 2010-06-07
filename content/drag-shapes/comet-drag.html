@@ -1,6 +1,5 @@
-<lift:surround with="default" at="content">
-<head>
-    <title>Comet Drag</title>
+(: #:title:# ~ Comet Drag :)
+(: #:head:# ~
     <style>
         #shape-container
         {
@@ -44,9 +43,7 @@
                          drag: function(e, ui) { sendUpdate(ui.position.left, ui.position.top); } })
     }
     //]]>
-    </script>
-</head>    
+    </script> :)
 <div id="shape-container">
     <lift:comet type="CometDrag"/>
 </div>
-</lift:surround>
