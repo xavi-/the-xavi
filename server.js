@@ -4,6 +4,7 @@ var fs = require("fs");
 var bind = require("./libraries/bind-js");
 var markdown = require("./libraries/markdown-js/lib/markdown");
 var srv = require("./libraries/xavlib/simple-router");
+var chn = require("./libraries/xavlib/channel");
 
 var DefaultBindHandler = (function() {
     function Handler(context, req, res) {
@@ -14,10 +15,14 @@ var DefaultBindHandler = (function() {
         });
     }
 
-    return function(path, id) {
+    return function(path, id, extContext) {
+        if(Object.prototype.toString.call(id) !== "[object String]") { extContext = id; id = ""; }
+        
         var context = { id: id,
                         link: bindLink,
                         content: function(callback) { callback("(: file ~ " + path + " :)"); } };
+        
+        for(var i in extContext) { context[i] = extContext[i]; }
         
         return function(req, res) { Handler(context, req, res); }; 
     };
@@ -64,6 +69,8 @@ srv.error = DefaultBindHandler("./content/404.html");
 
 srv.urls["/robots.txt"] = DefaultBindHandler("./content/robots.txt");
 
+srv.urls["/client.js"] = srv.staticFileHandler("./libraries/xavlib/channel/client.js", "application/x-javascript");
+
 srv.urls["/"] = srv.urls["/index.html"] = DefaultBindHandler("./content/index.html", "home");
 srv.urls["/about-me"] = DefaultBindHandler("./content/about-me.html", "about-me");
 srv.urls["/key-remapper"] = DefaultBindHandler("./content/key-remapper.html", "key-map");
@@ -80,9 +87,12 @@ srv.urls["/articles/operation-is-not-supported-code-9"] =
 srv.urls["/drag-shapes"] =
 srv.urls["/drag-shapes/"] =
 srv.urls["/drag-shapes/index.html"] = DefaultBindHandler("./content/drag-shapes/index.html", "drag-shapes");
-srv.urls["/drag-shapes/comet-drag"] = DefaultBindHandler("./content/drag-shapes/comet-drag.html");
 srv.urls["/drag-shapes/get-the-goal"] = DefaultBindHandler("./content/drag-shapes/get-the-goal.html");
 srv.urls["/drag-shapes/rotate-image"] = DefaultBindHandler("./content/drag-shapes/rotate-image.html");
 srv.urls["/drag-shapes/slanted-box"] = DefaultBindHandler("./content/drag-shapes/slanted-box.html");
+srv.urls["/drag-shapes/comet-drag"] =
+    DefaultBindHandler("./content/drag-shapes/comet-drag.html", require("./apps/comet-drag").start(chn));
+
+chn.start(srv);
 
 srv.server.listen(8000);
