@@ -7,12 +7,16 @@ var srv = require("./libraries/xavlib/simple-router");
 var chn = require("./libraries/xavlib/channel");
 
 var DefaultBindHandler = (function() {
-    function Handler(context, req, res) {
+    function handler(context, req, res) {
         bind.toFile("./content/templates/default.html", context, function(data) {
             res.writeHead(200, { "Conent-Length": data.length,
                                  "Content-Type": "text/html" });
             res.end(data, "utf8");
         });
+    }
+    
+    function bindMarkdown(callback, val) {
+        callback(markdown.renderJsonML(markdown.toHTMLTree(val,"Maruku")), {}, true); 
     }
 
     return function(path, id, extContext) {
@@ -20,11 +24,12 @@ var DefaultBindHandler = (function() {
         
         var context = { id: id,
                         link: bindLink,
+                        markdown: bindMarkdown,
                         content: function(callback) { callback("(: file ~ " + path + " :)"); } };
         
         for(var i in extContext) { context[i] = extContext[i]; }
         
-        return function(req, res) { Handler(context, req, res); }; 
+        return function(req, res) { handler(context, req, res); }; 
     };
 })();
 
@@ -83,6 +88,7 @@ srv.urls["/articles/"] =
 srv.urls["/articles/index.html"] = DefaultBindHandler("./content/articles/index.html", "articles");
 srv.urls["/articles/operation-is-not-supported-code-9"] =
     DefaultBindHandler("./content/articles/operation-is-not-supported-code-9.html");
+srv.urls["/articles/cool-chrome-eye-candy"] = DefaultBindHandler("./content/articles/cool-chrome-eye-candy.html");
 
 srv.urls["/drag-shapes"] =
 srv.urls["/drag-shapes/"] =

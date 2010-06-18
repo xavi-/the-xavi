@@ -1,0 +1,36 @@
+(: #:title:# ~ Cool Chrome Eye Candy :)
+(: markdown ~
+## Cool Chrome Eye Candy
+
+June 17, 2010
+
+Did you know that in the OSX version of chrome your mouse acts like a tiny tab spot light?  Check out these two images:
+
+![Mouse on the right side](/pics/articles/chrome-candy/highlight1.png){: .mouse-left}
+![Mouse on the right side](/pics/articles/chrome-candy/highlight2.png){: .mouse-right}
+
+Can you see the difference?  Well it turns out that in the picture on the left the "Pict" in "Pictionary" has a lighter background than the "Pict" on the right.
+
+Don't believe me?  I don't blame you... at first I didn't believe me either.  So I opened up my trusty copy of [gimp](http://www.gimp.org/) and used the handy dandy [threshold tool](http://docs.gimp.org/en/gimp-tool-threshold.html).
+
+The results were clear -- your mouse does indeed act like a tiny tab [spot](/pics/articles/chrome-candy/threshold1.png){: .mouse-left .result-image} [light](/pics/articles/chrome-candy/threshold2.png){:.mouse-right .result-image}!  Mouse over the images above and see for yourself.
+:)
+(: #:tail:# ~
+<script>
+$(function() {
+    var highlight = { right: $("img.mouse-right").attr("src"),
+                      left: $("img.mouse-left").attr("src") };
+    var threshold = { right: $(".result-image.mouse-right").attr("href"),
+                      left: $(".result-image.mouse-left").attr("href") };
+
+    $("img.mouse-left") 
+        .hover(function() { this.src = threshold.left; },
+               function() { this.src = highlight.left; });
+    $("img.mouse-right")
+        .hover(function() { this.src = threshold.right; },
+               function() { this.src = highlight.right; });
+
+    $(".result-image").replaceWith(function() { return $(this).text(); });
+    });
+</script>
+:)
