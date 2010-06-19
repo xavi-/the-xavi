@@ -44,7 +44,7 @@ $(function() {
     })();
 
     ch.onReceive(function(msg) {
-    	$('#shape').animate({ left: msg.content.left, top: msg.content.top});
+        $('#shape').animate({ left: msg.content.left, top: msg.content.top});
     });
 
     $("#shape")
