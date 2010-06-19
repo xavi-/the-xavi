@@ -45,32 +45,11 @@ var bindLink = (function() {
     };
 })();
 
-(function() { // Servers pics directory
-    function addPicType(extension, mimeType) {
-        var regPic = new RegExp("/pics/([/a-zA-Z0-9_-]+)\." + extension);
-        srv.patterns.push({
-            test: function(req) { return regPic.test(url.parse(req.url).pathname); },
-            handler: function(req, res) {
-                var uri = url.parse(req.url);
-                var picName = regPic.exec(uri.pathname)[1];
-            
-                fs.readFile("./content/pics/" + picName + "." + extension, "binary", function(err, data) {
-                    if(err) { throw err; }
-                
-                    res.writeHead(200, { "Content-Length": data.length,
-                                         "Content-Type": mimeType });
-                    res.end(data, "binary");
-                });
-            }
-        });
-    }
-    
-    addPicType("png", "image/png");
-    addPicType("jpg", "image/jpeg");
-    addPicType("gif", "image/gif");
-})();
-
 srv.error = DefaultBindHandler("./content/404.html");
+
+srv.patterns.push(srv.staticDirHandler("/pics/", "./content/pics/", "png", "image/png"));
+srv.patterns.push(srv.staticDirHandler("/pics/", "./content/pics/", "jpg", "image/jpeg"));
+srv.patterns.push(srv.staticDirHandler("/pics/", "./content/pics/", "gif", "image/gif"));
 
 srv.urls["/robots.txt"] = DefaultBindHandler("./content/robots.txt");
 
