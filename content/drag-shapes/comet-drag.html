@@ -28,29 +28,30 @@
 <script src="/client.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(function() {
-	var ch = new Channel("comet-drag", (: comet-drag ~ [:info-id:] :));
+    var ch = new Channel("comet-drag", (: comet-drag ~ [:info-id:] :));
 
-	var sendUpdate = (function() {
-	   var lastSent = (new Date()).getTime();
+    var sendUpdate = (function() {
+       var lastSent = (new Date()).getTime();
+
+       return function(x, y, forced) {
+           var curTime = (new Date()).getTime();
    
-	   return function(x, y) {
-	       var curTime = (new Date()).getTime();
-       
-	       if(curTime - lastSent < 250) { return; }
-       
-	       lastSent = curTime;
-	       ch.send({ left: x, top: y });
-	   };
-	})();
-	
-	ch.onReceive(function(msg) {
-		$('#shape').animate({ left: msg.content.left, top: msg.content.top});
-	});
-	
-	$("#shape")
-	    .draggable({ containment: "#shape-container", 
-	                 drag: function(e, ui) { sendUpdate(ui.position.left, ui.position.top); } })
-	
+           if(!forced && curTime - lastSent < 250) { return; }
+   
+           lastSent = curTime;
+           ch.send({ left: x, top: y });
+       };
+    })();
+
+    ch.onReceive(function(msg) {
+    	$('#shape').animate({ left: msg.content.left, top: msg.content.top});
+    });
+
+    $("#shape")
+        .draggable({ containment: "#shape-container", 
+                     drag: function(e, ui) { sendUpdate(ui.position.left, ui.position.top); },
+                     stop: function(e, ui) { sendUpdate(ui.position.left, ui.position.top, true); }  })
+
     $(window).load(function() { setTimeout(function() { ch.start(); }, 0); });
 });
 </script>
