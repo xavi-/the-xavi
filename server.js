@@ -68,6 +68,7 @@ srv.urls["/articles/index.html"] = DefaultBindHandler("./content/articles/index.
 srv.urls["/articles/operation-is-not-supported-code-9"] =
     DefaultBindHandler("./content/articles/operation-is-not-supported-code-9.html");
 srv.urls["/articles/cool-chrome-eye-candy"] = DefaultBindHandler("./content/articles/cool-chrome-eye-candy.html");
+srv.urls["/articles/qunit-html-template"] = DefaultBindHandler("./content/articles/qunit-html-template.html");
 
 srv.urls["/drag-shapes"] =
 srv.urls["/drag-shapes/"] =
