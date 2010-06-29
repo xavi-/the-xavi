@@ -51,7 +51,7 @@ srv.patterns.push(srv.staticDirHandler("/pics/", "./content/pics/", "png", "imag
 srv.patterns.push(srv.staticDirHandler("/pics/", "./content/pics/", "jpg", "image/jpeg"));
 srv.patterns.push(srv.staticDirHandler("/pics/", "./content/pics/", "gif", "image/gif"));
 
-srv.urls["/robots.txt"] = DefaultBindHandler("./content/robots.txt");
+srv.urls["/robots.txt"] = srv.staticFileHandler("./content/robots.txt", "text/plain");
 
 srv.urls["/client.js"] = srv.staticFileHandler("./libraries/xavlib/channel/client.js", "application/x-javascript");
 
