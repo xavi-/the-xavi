@@ -1,0 +1,35 @@
+(: #:title:# ~ Fun with .toString() in JavaScript :)
+(: markdown ~
+## Fun with `.toString()` in JavaScript
+
+June 30, 2010
+
+Implicit type conversion (aka type coercion) is probably the most dreaded feature in javascript. It's the reason why `2 + "2" === "22"` while `2 - "2" === 0`.  Like most seasoned js-ers, I've learned how to cope -- sometimes I've even been able to take advantage (e.g. `myBool = !!x`).  After 3 years in the biz, I thought I knew it all, but then javascript gave me a good ol' [ECMA-262](http://bclary.com/2004/11/07/#a-9.1) slap to the face.
+
+About a month ago, I was working on some code and through a series of unfortunate function calls I ended up indexing an array with another array.  Here's a quick example of what I did:
+
+    var gee = [2];
+    var emm = ["hi", "bye", "wtf?"];
+    
+    ohh = emm[gee]; // returns "wtf?"
+{: javascript }
+
+The most shocking thing about this code is that it executed without a problem -- how does `emm[[2]]` not throw an error?  I was very confused.  After almost rage quitting my CS career, I decided to take a deeper look.  I eventually discovered that the reason an error wasn't thrown was because `2 == [[2]]`.  This equality held true across every browser I tested.  Still confused and with no other options, I turned to [crowd sourcing](http://stackoverflow.com/questions/1724255).
+
+Turns out that when you index an array (or object), javascript implicitly converts the indexer into a string.  In other words, every time you go `foo[bar]`, javascript calls `.toString()` on `bar`.  As a consequence you can do things like this:
+
+    var myFriend = { toString: function() { "my BFF"; } };
+    var whoIs = {};
+    
+    whoIs[myFriend] = "Juanito";
+    
+    alter(whoIs[myFriend]); // shows "Juanito"
+    "my BFF" in whoIs; // true
+    myFiend in whoIs; // also true
+{: javascript }
+
+All this trickery boils down to the fact that `whosIs[myFriend]` is the same as `whoIs["my BFF"]`.  The wonders of JavaScript are endless...
+
+So what's the point of all this hackery?  Who knows?  Maybe someone will make an awesome DSL using this technique?  At very least another corner of javascript has been revealed.
+:)
+<div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/xaviramirez/embed.js"></script><noscript><a href="http://xaviramirez.disqus.com/?url=ref">View the discussion thread.</a></noscript>
