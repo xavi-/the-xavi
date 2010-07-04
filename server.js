@@ -71,6 +71,8 @@ srv.urls["/articles/cool-chrome-eye-candy"] = DefaultBindHandler("./content/arti
 srv.urls["/articles/qunit-html-template"] = DefaultBindHandler("./content/articles/qunit-html-template.html");
 srv.urls["/articles/fun-with-tostring-in-javascript"] =
 	DefaultBindHandler("./content/articles/fun-with-tostring-in-javascript.html");
+srv.urls["/articles/fun-with-valueof-in-javascript"] =
+	DefaultBindHandler("./content/articles/fun-with-valueof-in-javascript.html");
 
 srv.urls["/drag-shapes"] =
 srv.urls["/drag-shapes/"] =

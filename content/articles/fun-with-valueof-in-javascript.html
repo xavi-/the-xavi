@@ -1,0 +1,50 @@
+(: #:title:# ~ Fun with .valueOf() in JavaScript :)
+(: markdown ~
+## Fun with `.valueOf()` in JavaScript
+
+July 2nd, 2010
+
+Last week I talked about how I learned to [manipulate javascript's type coercion](/articles/fun-with-tostring-in-javascript) by overriding `.toString()`.  I thought that was the end of my type coercion adventures, but I soon found out that you can mess around with type coercion by overriding `.valueOf()` as well. Here are a couple of examples:
+
+    var a = { valueOf: function() { return 2; } };
+    isNaN(a) === false // a is a Number!
+    Number(a) // returns 2
+    a == 2; // returns true
+    a + 3; // returns 5!
+    +a; // returns 2
+    "2" + a; // returns "22" -- just like a real number! (i.e. "2" + 2 === "22")
+{: javascript }
+
+Much of this behavior is a consequence of the [various steps](http://bclary.com/2004/11/07/#a-11.6.1) javascript performs while trying to "add" two elements.  This [question/answer](http://stackoverflow.com/questions/2485632) does a particularly good job explaining what's going on.  You may ask, "What's the point of all this silliness?" to which I would reply, "I really don't know... maybe you can make a DSL?" Maybe one like this:
+
+    (function() { // Make numbers look like strings
+        var oldToString = Number.prototype.toString;
+        Number.prototype.toString = function() {
+            if(this == 4) { return "four"; }
+            else { return oldToString.call(this); }
+        };
+    })();
+    
+    var four = new Number(4);
+    alert(1 + four); // shows 5
+    alert(four); // shows "four"
+    
+    (function() { // Make strings look like numbers
+        var oldValueOf = String.prototype.valueOf;
+        String.prototype.valueOf = function() {
+            if(this.toLowerCase() == "five") { return 5; }
+            else { return oldValueOf.call(this); }
+        };
+    })();
+    
+    var five = new String("five");
+    alert(1 + five); // shows 6
+    alert(five); // shows "five"
+    
+    alert(four + five); // shows 9!
+{: javascript }
+
+This last example is especially interesting -- a number was returned when a string and a number were "added" together.  Typically a string is returned (e.g. "2" + 2 === "22").  The reason a number was returned instead of a string was because when `four` and `five` were "added" together, the `.valueOf()` method was called on each variable.  Underneath the covers, the `.valueOf()` method was indirectly called by an internal method called [ToPrimitive](http://bclary.com/2004/11/07/#a-9.1).  Since `.valueOf()` returned a number for both variables, the [arithmetic `+`](http://bclary.com/2004/11/07/#a-11.6.3) was used.  The arithmetic version of `+` produced a number, which was ultimately returned as the value of `four + five`.
+
+Admittedly this DSL is quite fragile (e.g. `four !== 4`), but I feel it's a nice showcase of what a little `.toString()` and `.valueOf()` magic can do.
+:)
