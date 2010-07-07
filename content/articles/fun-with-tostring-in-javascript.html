@@ -4,7 +4,7 @@
 
 June 30, 2010
 
-Implicit type conversion (aka type coercion) is probably the most dreaded feature in javascript. It's the reason why `2 + "2" === "22"` while `2 - "2" === 0`.  Like most seasoned js-ers, I've learned how to cope -- sometimes I've even been able to take advantage (e.g. `myBool = !!x`).  After 3 years in the biz, I thought I knew it all, but then javascript gave me a good ol' [ECMA-262](http://bclary.com/2004/11/07/#a-9.1) slap to the face.
+Implicit type conversion (aka type coercion) is probably the [most dreaded feature in javascript](http://i.imgur.com/Xt2XT.png). It's the reason why `2 + "2" === "22"` while `2 - "2" === 0`.  Like most seasoned js-ers, I've learned how to cope -- sometimes I've even been able to take advantage (e.g. `myBool = !!x`).  After 3 years in the biz, I thought I knew it all, but then javascript gave me a good ol' [ECMA-262](http://bclary.com/2004/11/07/#a-9.1) slap to the face.
 
 About a month ago, I was working on some code and through a series of unfortunate function calls I ended up indexing an array with another array.  Here's a quick example of what I did:
 
