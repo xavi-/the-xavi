@@ -1,0 +1,163 @@
+(: #:title:# ~ Links to jQuery UI CSS themes hosted on Google's CDN :)
+(: #:head:# ~
+<link rel="stylesheet" id="theme" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery-ui.css" type="text/css" media="screen" />
+<style>
+    #list-container, #examples { overflow: hidden; }
+    #theme-list, #examples { float: left; }
+    #examples { max-width: 630px; }
+    #theme-list { margin-right: 75px; }
+    #examples>div { float: left; max-width: 350px; min-height: 180px; margin-left: 20px; }
+    #examples .example { font-size: 60%; }
+    #theme-name{ text-align: center; margin-bottom: 0px; }
+    #buttons form { margin-top: 10px; }
+</style>
+:)
+(: markdown ~
+## Links to jQuery UI CSS themes hosted on Google's CDN
+
+July 7, 2010
+
+It's well known that Google hosts several [popular javascript libraries](http://code.google.com/apis/ajaxlibs/) on their public CDN.  A lesser know fact is that google also hosts an number CSS themes for jQuery UI (both [v1.7.3](http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.3/jquery-ui.js) and [v1.8.2](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.js )).  For whatever this remains undocumented.  In the past, I've had a hard time finding them, so I decided to help myself out (and maybe others) and put a list together.
+
+### jQuery UI 1.8.2 CSS Themes:
+:)
+<div id="list-container">
+    <div id="theme-list">
+(: markdown ~
+- [Base](#base){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery-ui.css)
+- [Black Tie](#black-tie){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/black-tie/jquery-ui.css)
+- [Blitzer](#blitzer){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/blitzer/jquery-ui.css)
+- [Cupertino](#cupertino){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/cupertino/jquery-ui.css)
+- [Dark Hive](#dark-hive){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/dark-hive/jquery-ui.css)
+- [Dot Luv](#dot-luv){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/dot-luv/jquery-ui.css)
+- [Eggplant](#eggplant){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/eggplant/jquery-ui.css)
+- [Excite Bike](#excite-bike){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/excite-bike/jquery-ui.css)
+- [Flick](#flick){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/flick/jquery-ui.css)
+- [Hot sneaks](#hot-sneaks){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/hot-sneaks/jquery-ui.css)
+- [Humanity](#humanity){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/humanity/jquery-ui.css)
+- [Le Frog](#le-frog){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/le-frog/jquery-ui.css)
+- [Mint Choc](#mint-choc){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/mint-choc/jquery-ui.css)
+- [Overcast](#overcast){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/overcast/jquery-ui.css)
+- [Pepper Grinder](#pepper-grinder){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/pepper-grinder/jquery-ui.css)
+- [Redmond](#redmond){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/redmond/jquery-ui.css)
+- [Smoothness](#smoothness){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css)
+- [South Street](#south-street){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/south-street/jquery-ui.css)
+- [Start](#start){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/start/jquery-ui.css)
+- [Sunny](#sunny){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/sunny/jquery-ui.css)
+- [Swanky Purse](#swanky-purse){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/swanky-purse/jquery-ui.css)
+- [Trontastic](#trontastic){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/trontastic/jquery-ui.css)
+- [UI Darkness](#ui-darkness){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/ui-darkness/jquery-ui.css)
+- [UI Lightness](#ui-lightness){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/ui-lightness/jquery-ui.css)
+- [Vader](#vader){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/vader/jquery-ui.css)
+:)
+    </div>
+    <div id="examples">
+        <h3 id="theme-name">Base</h3>
+        <div>
+        <h4>Buttons:</h4>
+            <div id="buttons" class="example">
+                <a href="#">One</a>
+                <form>
+                    <input type="radio" id="two" name="demo" /><label for="two">Two</label>
+                    <input type="radio" id="three" name="demo" checked="chk" /><label for="three">Three</label>
+                    <input type="radio" id="four" name="demo" /><label for="four">Four</label>
+                </form>
+            </div>
+        </div>
+        <div>
+        <h4>Tabs:</h4>
+            <div id="tabs" class="example">
+                <ul>
+                    <li><a href="#tabs-1">Nunc tincidunt</a></li>
+                    <li><a href="#tabs-2">Proin dolor</a></li>
+                    <li><a href="#tabs-3">Aenean lacinia</a></li>
+                </ul>
+                <div id="tabs-1">
+                    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo.</p>
+                </div>
+                <div id="tabs-2">
+                    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. </p>
+                </div>
+                <div id="tabs-3">
+                    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+                    <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio.</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h4>Date Picker:</h4>
+            <div id="date-picker" class="example"></div>
+            <h4><a id="dialog" href="#">Show Dialog</a></h4>
+        </div>
+        <div>
+            <h4>Accordion</h4>
+            <div id="accordion" class="example">
+                <h3><a href="#">Section 1</a></h3>
+                <div>
+                    <p>
+                    Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+                    ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+                    amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+                    odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+                    </p>
+                </div>
+                <h3><a href="#">Section 2</a></h3>
+                <div>
+                    <p>
+                    Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+                    purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+                    velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+                    suscipit faucibus urna.
+                    </p>
+                </div>
+                <h3><a href="#">Section 3</a></h3>
+                <div>
+                    <p>
+                    Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+                    Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+                    ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+                    lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+                    </p>
+                    <ul>
+                        <li>List item one</li>
+                        <li>List item two</li>
+                        <li>List item three</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+(: markdown ~
+I originally got these links form a jQuery UI [blog post](http://blog.jqueryui.com/2009/03/jquery-ui-17/).  Also check out the jQuery UI [documentation](http://jqueryui.com/demos/) and [theme roller](http://jqueryui.com/themeroller/).  Note that google also hosts themes for jQuery UI v1.7.x though not all the ones listed above are available.
+:)
+
+(: #:tail:# ~
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+<script>
+$(function() {
+    $("#buttons")
+        .find("a").click(function() { return false; }).button().end()
+        .find("form").buttonset();
+    $("#date-picker").datepicker();
+    $("#tabs").tabs();
+    $("#accordion").accordion();
+    $("#dialog").click(function() {
+        $("<div>This is a dialog box<br/><br/>Isn't it nice?</div>")
+            .dialog({ modal: true, title: "An example" });
+        return false;
+    });
+    
+    $(".preview").click(function() {
+        var theme = $(this).attr("href").substring(1);
+        var themeName = $(this).text();
+        var url = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/" + theme + "/jquery-ui.css";
+        
+        $("#theme-name").text(themeName);
+        $("#theme").attr("href", url);
+        
+        return false;
+    });
+});
+</script>
+:)

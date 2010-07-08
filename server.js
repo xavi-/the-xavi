@@ -73,6 +73,8 @@ srv.urls["/articles/fun-with-tostring-in-javascript"] =
 	DefaultBindHandler("./content/articles/fun-with-tostring-in-javascript.html");
 srv.urls["/articles/fun-with-valueof-in-javascript"] =
 	DefaultBindHandler("./content/articles/fun-with-valueof-in-javascript.html");
+srv.urls["/articles/jquery-ui-css-themes-hosted-on-cdn"] =
+  DefaultBindHandler("./content/articles/jquery-ui-css-themes-hosted-on-cdn.html");
 
 srv.urls["/drag-shapes"] =
 srv.urls["/drag-shapes/"] =
