@@ -10,6 +10,7 @@
     #examples .example { font-size: 60%; }
     #theme-name{ text-align: center; margin: 0px; }
     #buttons form { margin-top: 10px; }
+    .selected { background-color: #CCFFFF; }
 </style>
 :)
 (: markdown ~
@@ -24,7 +25,7 @@ It's well known that Google hosts several [popular javascript libraries](http://
 <div id="list-container">
     <div id="theme-list">
 (: markdown ~
-- [Base](#base){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery-ui.css)
+- [Base](#base){: .preview .selected } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery-ui.css)
 - [Black Tie](#black-tie){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/black-tie/jquery-ui.css)
 - [Blitzer](#blitzer){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/blitzer/jquery-ui.css)
 - [Cupertino](#cupertino){: .preview } - [source](http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/cupertino/jquery-ui.css)
@@ -157,6 +158,9 @@ $(function() {
         
         $("#theme-name").text(themeName);
         $("#theme").attr("href", url);
+        $(this)
+            .parents("ul").find(".selected").removeClass("selected").end().end()
+            .addClass("selected");
         
         return false;
     });
