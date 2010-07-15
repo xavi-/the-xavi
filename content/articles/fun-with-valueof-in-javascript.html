@@ -47,5 +47,7 @@ Much of this behavior is a consequence of the [various steps](http://bclary.com/
 This last example is especially interesting -- a number was returned when a string and a number were "added" together.  Typically a string is returned (e.g. "2" + 2 === "22").  The reason a number was returned instead of a string was because when `four` and `five` were "added" together, the `.valueOf()` method was called on each variable.  Underneath the covers, the `.valueOf()` method was indirectly called by an internal method called [ToPrimitive](http://bclary.com/2004/11/07/#a-9.1).  Since `.valueOf()` returned a number for both variables, the [arithmetic `+`](http://bclary.com/2004/11/07/#a-11.6.3) was used.  The arithmetic version of `+` produced a number, which was ultimately returned as the value of `four + five`.
 
 Admittedly this DSL is quite fragile (e.g. `four !== 4`), but I feel it's a nice showcase of what a little `.toString()` and `.valueOf()` magic can do.
+
+**UPDATE** (July 15, 2010):  I just stumbled across a cool library called [def.js](http://badassjs.com/post/811837523/def-js-ruby-style-inheritance-in-javascript) that takes advantage of the `.valueOf()` behavior.
 :)
 <div id="disqus_thread"></div><script type="text/javascript" defer="defer" src="http://disqus.com/forums/xaviramirez/embed.js"></script><noscript><a href="http://xaviramirez.disqus.com/?url=ref">View the discussion thread.</a></noscript>
