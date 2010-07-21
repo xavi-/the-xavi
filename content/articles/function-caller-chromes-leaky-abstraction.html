@@ -1,0 +1,59 @@
+(: #:title:# ~ function.caller and Chrome's leaky abstraction :)
+(: markdown ~
+## `function.caller` and Chrome's leaky abstraction
+
+July 16, 2010
+
+One of the great (or awful?) things about JavaScript are the little hidden features sprinkled throughout the language.  I was recently reintroduced to one such feature named [`function.caller`](https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function/caller).  This property gives programmers access to the current call stack.  Here's how it's typically used:
+
+    // Example 1
+    function foo() { bar(); }
+    function bar() { alert(bar.caller.name); }
+    foo(); // shows "foo"
+    
+    // Example 2
+    function baz() { alert(baz.caller.name); }
+    baz(); // throws null pointer (or it shows "eval" if you're using a js console [e.g. firebug])
+{: javascript }
+
+Example 2 throws a null pointer exception as a result of `function.caller` always being `null` when accessed from a function at the bottom of the call stack.  Also note that in both examples I used the non-standard [`function.name`](https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function/name) property to ensure that readable results are shown.
+
+The value of `function.caller` is fairly consistent across browsers -- except when native functions get involved.  For example:
+
+    //Example 3
+    function run() {
+        // Used short length array to help ensure only one comparison is made
+        [1, 2].sort(function sorter(a, b) {
+            var fn = sorter;
+        
+            // Prints call stack
+            do { console.log(fn.name); } while(fn = fn.caller);
+        
+            return a - b;
+        });
+    }
+    
+    run();
+{: javascript }
+
+In the code above, a custom [comparison function](https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/sort#Parameters) is used to sort an array.  Each time this comparison function is executed, the call stack is printed out to the console. In Firefox and Safari, the call stack is pretty much what you'd expect ("sorter", "run"), but in Chrome (v5.0) the results are a bit more revealing: 
+
+    // Results Firefox and Safari: 
+    sorter
+    run
+    
+    // Results from Chrome:
+    sorter
+    Compare
+    InsertionSort
+    QuickSort
+    sort
+    run
+
+Thanks to `function.caller`, we now know that Chrome uses a combination of quick sort and insertion sort to implement `Array.prototype.sort`.  This is an implementation detail that has leaked though the abstraction of the interpreter.
+In fact the leaks don't stop there.  A real go-getter could even read the argument list of each function in the call stack by using commands like `sorter.caller.arguments` and `sorter.caller.caller.arguments`.
+
+Whether or not this behavior was intended by the Chrome team is unclear, but it's certainly interesting.
+
+I also tested these examples in Opera and IE, but I felt the results were fairly uninteresting.  IE doesn't support `function.name`, and in example 3, `sorter.caller` is always `null`.  Opera's results were consistent with FireFox's, except its call stack in example 3 was: "Inline script thread", "sorter", "Inline script thread", "run".
+:)
