@@ -77,6 +77,8 @@ srv.urls["/articles/jquery-ui-css-themes-hosted-on-cdn"] =
   DefaultBindHandler("./content/articles/jquery-ui-css-themes-hosted-on-cdn.html");
 srv.urls["/articles/function-caller-chromes-leaky-abstraction"] =
   DefaultBindHandler("./content/articles/function-caller-chromes-leaky-abstraction.html");
+srv.urls["/articles/trouble-with-touch-events-jquery"] = 
+  DefaultBindHandler("./content/articles/trouble-with-touch-events-jquery.html");
 
 srv.urls["/drag-shapes"] =
 srv.urls["/drag-shapes/"] =

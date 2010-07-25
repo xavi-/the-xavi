@@ -1,0 +1,45 @@
+(: #:title:# ~ Trouble with touch events in jQuery :)
+(: #:head:# ~
+<style>
+    table, td, th { border: thin solid black; border-collapse: collapse; }
+    td, th { padding: 0px 5px; }
+</style>
+:)
+(: markdown ~
+## Trouble with touch events in jQuery
+
+July 25, 2010
+
+Yesterday I became a proud own of a new 3G iPad and like any good web developer, I decided to upgrade my webapps to be touch enabled.  Thanks to a friend's [touch presentation](http://jimbojw.com/mobile-events/), I had a fairly good understanding of what to do.  Basically in addition to the `mousedown`, `mousemove`, and `mouseup` events, you should also bind to the corresponding touch events. (See below)
+:)
+<table>
+    <tr><th>Mouse Event</th><th>Touch Event(s)</th></tr>
+    <tr><td><code>mousedown</code></td><td><code>touchstart</code> and <code>MozTouchDown</code></td></tr>
+    <tr><td><code>mousemove</code></td><td><code>touchmove</code> and <code>MozTouchMove</code></td></tr>
+    <tr><td><code>mouseup</code></td><td><code>touchend</code> and <code>MozTouchRelease</code></td></tr>
+</table>
+<small>Note: The iPad, iPhone, and iPod also support a set of <a href="http://developer.apple.com/safari/library/documentation/appleapplications/reference/safariwebcontent/handlingevents/handlingevents.html#//apple_ref/doc/uid/TP40006511-SW23">gesture events</a>.</small>
+(: markdown ~
+I was able to make most of my apps touch compatible by simply binding to the events listed above and by adding this snippet to the top of my mouse handlers:
+
+    if(e.touches && e.touches.length) { e = e.touches[0]; }
+    else if(e.changedTouches && e.changedTouches.length) { e = e.changedTouches[0]; }
+
+Since users are allowed to touch webpages at several points simultaneously, browsers always return events arrays (via `e.touches` and `e.changedTouches` \[see [reference](http://developer.apple.com/safari/library/documentation/UserExperience/Reference/TouchEventClassReference/TouchEvent/TouchEvent.html#//apple_ref/doc/uid/TP40009358-CH4-SW3 )]) for touch events.  The nice thing about the items in `e.touches` and `e.changedTouches` is that they roughly mirror mouse event objects -- both have properties such as `e.pageX`, `e.pageY`, and `e.target`.  This made the migration fairly painless...
+
+However, everything went nutty when I started working on my [pictionary app](http://defuddle.me/pictionary).  For the sake of convenience I decided to used jquery to bind my touch events, but for some reason, the events sent to my touch handlers did not have `e.touches` or `e.changedTouches` properties.
+
+After deep debugging, I eventually discovered that the source of this problem was the [`fix` method](http://github.com/jquery/jquery/blob/master/src/event.js#L430) in jquery's event code.  The `fix` method tries to copy the event object in order to fix various cross browser issues.  Unfortunately, it seems that mobile safari does not allow the `e.touches` and `e.changedTouches` properties on event objects to be copied to another object.  This is weird and annoying.  Luckily you can get around this issue by using `e.originalEvent`.
+
+So, if you're using jquery and you want to make your webapp touch enabled, a good start might be to add a couple of lines to the top of your mouse handlers like this:
+
+    $("...").bind("mousedown touchstart MozTouchDown", function(e) {
+        if(e.originalEvent.touches && e.originalEvent.touches.length) {
+            e = e.originalEvent.touches[0];
+        } else if(e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
+            e = e.originalEvent.changedTouches[0];
+        }
+    
+        // Handle mouse down
+    });
+:)
