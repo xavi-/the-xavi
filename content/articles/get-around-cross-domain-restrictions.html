@@ -21,7 +21,7 @@ This header specifies which domains are allowed to view the contents of a respon
     });
     
     server.listen(8888);
-{: javascript }
+{: .javascript }
 
 This web server replies to any request with a response that has a body of "hello" and a header that contains these three fields: `Content-Length`, `Content-Type` and `Access-Control-Allow-Origin`.  The first two headers are pretty standard.  They tell the browser how big the response is (in this case 5 bytes) and how to interpret the data (in this case plain text).  The third header, the one we're interested in, tells the browser which domains have access to the response body.  In this case, we set the value of `Access-Control-Allow-Origin` to "*", which means the browser is allowed to show the response body to any domain.
 
@@ -33,7 +33,7 @@ As a result of having the header `Access-Control-Allow-Origin` set to "*", the f
         if(xhr.readyState === 4) { console.log(xhr.responseText); }
     };
     xhr.send();
-{: javascript }
+{: .javascript }
 
 This code simply makes an ajax request to the local node.js server and prints out the response to the console.  Without the `Access-Control-Allow-Origin` header, the response text would always be blank.  Note, you could also set the access control header to specific domain such as http://myfoo.bar, which could be helpful if instead of using a general purpose comet service, you decided to serve all your comet code from a subdomain (e.g. comet.myfoo.bar).
 

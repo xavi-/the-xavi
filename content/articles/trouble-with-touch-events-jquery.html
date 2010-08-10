@@ -24,6 +24,7 @@ I was able to make most of my apps touch compatible by simply binding to the eve
 
     if(e.touches && e.touches.length) { e = e.touches[0]; }
     else if(e.changedTouches && e.changedTouches.length) { e = e.changedTouches[0]; }
+{: .javascript }
 
 Since users are allowed to touch webpages at several points simultaneously, browsers always return events arrays (via `e.touches` and `e.changedTouches` \[see [reference](http://developer.apple.com/safari/library/documentation/UserExperience/Reference/TouchEventClassReference/TouchEvent/TouchEvent.html#//apple_ref/doc/uid/TP40009358-CH4-SW3 )]) for touch events.  The nice thing about the items in `e.touches` and `e.changedTouches` is that they roughly mirror mouse event objects -- both have properties such as `e.pageX`, `e.pageY`, and `e.target`.  This made the migration fairly painless...
 
@@ -42,4 +43,5 @@ So, if you're using jquery and you want to make your webapp touch enabled, a goo
     
         // Handle mouse down
     });
+{: .javascript }
 :)

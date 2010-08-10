@@ -12,7 +12,7 @@ About a month ago, I was working on some code and through a series of unfortunat
     var emm = ["hi", "bye", "wtf?"];
     
     ohh = emm[gee]; // returns "wtf?"
-{: javascript }
+{: .javascript }
 
 The most shocking thing about this code is that it executed without a problem -- how does `emm[[2]]` not throw an error?  I was very confused.  After almost rage quitting my CS career, I decided to take a deeper look.  I eventually discovered that the reason an error wasn't thrown was because `2 == [[2]]`.  This equality held true across every browser I tested.  Still confused and with no other options, I turned to [crowd sourcing](http://stackoverflow.com/questions/1724255).
 
@@ -26,7 +26,7 @@ Turns out that when you index an array (or object), javascript implicitly conver
     alter(whoIs[myFriend]); // shows "Juanito"
     "my BFF" in whoIs; // true
     myFiend in whoIs; // also true
-{: javascript }
+{: .javascript }
 
 All this trickery boils down to the fact that `whosIs[myFriend]` is the same as `whoIs["my BFF"]`.  The wonders of JavaScript are endless...
 

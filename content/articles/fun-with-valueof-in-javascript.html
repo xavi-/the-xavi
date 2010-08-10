@@ -13,7 +13,7 @@ Last week I talked about how I learned to [manipulate javascript's type coercion
     a + 3; // returns 5!
     +a; // returns 2
     "2" + a; // returns "22" -- just like a real number! (i.e. "2" + 2 === "22")
-{: javascript }
+{: .javascript }
 
 Much of this behavior is a consequence of the [various steps](http://bclary.com/2004/11/07/#a-11.6.1) javascript performs while trying to "add" two elements.  This [question/answer](http://stackoverflow.com/questions/2485632) does a particularly good job explaining what's going on.  You may ask, "What's the point of all this silliness?" to which I would reply, "I really don't know... maybe you can make a DSL?" Maybe one like this:
 
@@ -42,7 +42,7 @@ Much of this behavior is a consequence of the [various steps](http://bclary.com/
     alert(five); // shows "five"
     
     alert(four + five); // shows 9!
-{: javascript }
+{: .javascript }
 
 This last example is especially interesting -- a number was returned when a string and a number were "added" together.  Typically a string is returned (e.g. "2" + 2 === "22").  The reason a number was returned instead of a string was because when `four` and `five` were "added" together, the `.valueOf()` method was called on each variable.  Underneath the covers, the `.valueOf()` method was indirectly called by an internal method called [ToPrimitive](http://bclary.com/2004/11/07/#a-9.1).  Since `.valueOf()` returned a number for both variables, the [arithmetic `+`](http://bclary.com/2004/11/07/#a-11.6.3) was used.  The arithmetic version of `+` produced a number, which was ultimately returned as the value of `four + five`.
 

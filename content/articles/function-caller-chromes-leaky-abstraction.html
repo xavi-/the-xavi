@@ -14,7 +14,7 @@ One of the great (or awful?) things about JavaScript are the little hidden featu
     // Example 2
     function baz() { alert(baz.caller.name); }
     baz(); // throws null pointer (or it shows "eval" if you're using a js console [e.g. firebug])
-{: javascript }
+{: .javascript }
 
 Example 2 throws a null pointer exception as a result of `function.caller` always being `null` when accessed from a function at the bottom of the call stack.  Also note that in both examples I used the non-standard [`function.name`](https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function/name) property to ensure that readable results are shown.
 
@@ -34,7 +34,7 @@ The value of `function.caller` is fairly consistent across browsers -- except wh
     }
     
     run();
-{: javascript }
+{: .javascript }
 
 In the code above, a custom [comparison function](https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/sort#Parameters) is used to sort an array.  Each time this comparison function is executed, the call stack is printed out to the console. In Firefox and Safari, the call stack is pretty much what you'd expect ("sorter", "run"), but in Chrome (v5.0) the results are a bit more revealing: 
 
