@@ -70,15 +70,17 @@ srv.urls["/articles/operation-is-not-supported-code-9"] =
 srv.urls["/articles/cool-chrome-eye-candy"] = DefaultBindHandler("./content/articles/cool-chrome-eye-candy.html");
 srv.urls["/articles/qunit-html-template"] = DefaultBindHandler("./content/articles/qunit-html-template.html");
 srv.urls["/articles/fun-with-tostring-in-javascript"] =
-	DefaultBindHandler("./content/articles/fun-with-tostring-in-javascript.html");
+    DefaultBindHandler("./content/articles/fun-with-tostring-in-javascript.html");
 srv.urls["/articles/fun-with-valueof-in-javascript"] =
-	DefaultBindHandler("./content/articles/fun-with-valueof-in-javascript.html");
+    DefaultBindHandler("./content/articles/fun-with-valueof-in-javascript.html");
 srv.urls["/articles/jquery-ui-css-themes-hosted-on-cdn"] =
-  DefaultBindHandler("./content/articles/jquery-ui-css-themes-hosted-on-cdn.html");
+    DefaultBindHandler("./content/articles/jquery-ui-css-themes-hosted-on-cdn.html");
 srv.urls["/articles/function-caller-chromes-leaky-abstraction"] =
-  DefaultBindHandler("./content/articles/function-caller-chromes-leaky-abstraction.html");
+    DefaultBindHandler("./content/articles/function-caller-chromes-leaky-abstraction.html");
 srv.urls["/articles/trouble-with-touch-events-jquery"] = 
-  DefaultBindHandler("./content/articles/trouble-with-touch-events-jquery.html");
+    DefaultBindHandler("./content/articles/trouble-with-touch-events-jquery.html");
+srv.urls["/articles/get-around-cross-domain-restrictions"] = 
+    DefaultBindHandler("./content/articles/get-around-cross-domain-restrictions.html");
 
 srv.urls["/drag-shapes"] =
 srv.urls["/drag-shapes/"] =

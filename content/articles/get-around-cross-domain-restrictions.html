@@ -1,0 +1,42 @@
+(: #:title:# ~ How to get around cross domain restrictions :)
+(: markdown ~
+## How to get around cross domain restrictions
+
+August 7, 2010
+
+While working on a couple of [comet](http://en.wikipedia.org/wiki/Comet_(programming) ) [based](http://www.magnetic-poetry.com) [games](http://www.defuddle.me), the idea of a general purpose comet service occurred to me.  Instead of maintaining comet code for each realtime app, I thought it would be much more convenient if I could create a cloud based service (let's call it comet.io) that would let me `POST` data to a url (e.g http://comet.io/my-channel/send) and then automatically relay that data to everyone listening to a corresponding read url (e.g. http://comet.io/my-channel/read).
+
+Well it turns out there's already a company called [PubNub](http://www.pubnub.com/) that does that.  Oh well... but while thinking through this idea, I realized that this service would be plagued by [cross domain restrictions](http://en.wikipedia.org/wiki/Same_origin_policy).  The root of the problem comes from the fact that anyone using comet.io would have to receive ajax responses from http://comet.io, but because of the same origin policy, the contents of all ajax responses would always be empty.  In the past people would use [JSONP](http://en.wikipedia.org/wiki/JSON#JSONP) to work around this restriction, but after a bit of research I discovered that most modern browsers (Firefox 3.5+, Chrome 5+, IE7+, and Safari 5+) support an HTTP header called [`Access-Control-Allow-Origin`](https://developer.mozilla.org/en/HTTP_access_control#Access-Control-Allow-Origin).
+
+This header specifies which domains are allowed to view the contents of a response.  For example, here's a simple web server written in [node.js](http://www.nodejs.org) that uses the `Access-Control-Allow-Origin` header.
+
+    var http = require("http");
+    
+    var server = http.createServer(function(req, res) {
+        var data = "hello";
+        res.writeHead(200, { "Content-Length": data.length,
+                             "Content-Type": "text/plain",
+                             "Access-Control-Allow-Origin": "*" }); // Here's the magic
+        res.end(data);
+    });
+    
+    server.listen(8888);
+{: javascript }
+
+This web server replies to any request with a response that has a body of "hello" and a header that contains these three fields: `Content-Length`, `Content-Type` and `Access-Control-Allow-Origin`.  The first two headers are pretty standard.  They tell the browser how big the response is (in this case 5 bytes) and how to interpret the data (in this case plain text).  The third header, the one we're interested in, tells the browser which domains have access to the response body.  In this case, we set the value of `Access-Control-Allow-Origin` to "*", which means the browser is allowed to show the response body to any domain.
+
+As a result of having the header `Access-Control-Allow-Origin` set to "*", the following code will always print "hello" to the console, regardless of which site it's executed on:
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://localhost:8888");
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState === 4) { console.log(xhr.responseText); }
+    };
+    xhr.send();
+{: javascript }
+
+This code simply makes an ajax request to the local node.js server and prints out the response to the console.  Without the `Access-Control-Allow-Origin` header, the response text would always be blank.  Note, you could also set the access control header to specific domain such as http://myfoo.bar, which could be helpful if instead of using a general purpose comet service, you decided to serve all your comet code from a subdomain (e.g. comet.myfoo.bar).
+
+The only modern browser that doesn't support this header is Opera, which is unfortunate, but it makes `Access-Control-Allow-Origin` only around 2% less useful.
+:)
+<div id="disqus_thread"></div><script type="text/javascript" defer="defer" src="http://disqus.com/forums/xaviramirez/embed.js"></script><noscript><a href="http://xaviramirez.disqus.com/?url=ref">View the discussion thread.</a></noscript>
