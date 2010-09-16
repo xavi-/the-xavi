@@ -57,6 +57,7 @@ srv.urls["/client.js"] = srv.staticFileHandler("./libraries/xavlib/channel/clien
 
 srv.urls["/"] = srv.urls["/index.html"] = DefaultBindHandler("./content/index.html", "home");
 srv.urls["/about-me"] = DefaultBindHandler("./content/about-me.html", "about-me");
+srv.urls["/resume"] = DefaultBindHandler("./content/resume.html", "resume");
 srv.urls["/key-remapper"] = DefaultBindHandler("./content/key-remapper.html", "key-map");
 srv.urls["/magnetic-poetry"] = DefaultBindHandler("./content/magnetic-poetry.html", "mag-poetry");
 srv.urls["/tv-schedule-downloader"] = DefaultBindHandler("./content/tv-schedule-downloader.html", "tv-download");
