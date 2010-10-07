@@ -63,6 +63,8 @@ srv.urls["/magnetic-poetry"] = DefaultBindHandler("./content/magnetic-poetry.htm
 srv.urls["/tv-schedule-downloader"] = DefaultBindHandler("./content/tv-schedule-downloader.html", "tv-download");
 srv.urls["/visual-sort"] = DefaultBindHandler("./content/visual-sort.html", "visual-sort");
 
+srv.urls["/interview"] = srv.staticFileHandler("./content/interview.html", "text/html");
+
 srv.urls["/articles"] = 
 srv.urls["/articles/"] = 
 srv.urls["/articles/index.html"] = DefaultBindHandler("./content/articles/index.html", "articles");
