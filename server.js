@@ -1,10 +1,11 @@
-var sys = require("sys");
 var url = require("url");
 var fs = require("fs");
 var bind = require("./libraries/bind-js");
 var markdown = require("./libraries/markdown-js/lib/markdown");
 var srv = require("./libraries/xavlib/simple-router");
 var chn = require("./libraries/xavlib/channel");
+
+process.title = "node-xavi.co";
 
 var DefaultBindHandler = (function() {
     function handler(context, req, res) {
@@ -97,3 +98,4 @@ srv.urls["/drag-shapes/comet-drag"] =
 chn.start(srv);
 
 srv.server.listen(8004);
+console.log("Serving xavi.co on port 8004");
