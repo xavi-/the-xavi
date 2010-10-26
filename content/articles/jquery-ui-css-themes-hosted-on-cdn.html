@@ -1,14 +1,15 @@
 (: #:title:# ~ Links to jQuery UI CSS themes hosted on Google's CDN :)
 (: #:head:# ~
-<link rel="stylesheet" id="theme" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/base/jquery-ui.css" type="text/css" media="screen" />
+<link rel="stylesheet" class="theme-link" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/base/jquery-ui.css" type="text/css" media="screen" />
 <style>
     #list-container, #examples { overflow: hidden; }
     #theme-list, #examples { float: left; }
-    #examples { max-width: 630px; }
     #theme-list { margin-right: 75px; }
-    #examples>div { float: left; max-width: 350px; min-height: 180px; margin-left: 20px; }
+    #examples { max-width: 630px; }
+    #examples .example-container { float: left; max-width: 350px; min-height: 180px; margin-left: 20px; }
     #examples .example { font-size: 60%; }
-    #theme-name{ text-align: center; margin: 0px; }
+    #theme-name { text-align: center; margin: 0px; }
+    .theme-url-container { text-align: center; }
     #buttons form { margin-top: 10px; }
     .selected { background-color: #CCFFFF; }
 </style>
@@ -54,8 +55,12 @@ It's well known that Google hosts several [popular javascript libraries](http://
     </div>
     <div id="examples">
         <h3 id="theme-name">Base</h3>
-        <div>
-        <h4>Buttons:</h4>
+        <div class="theme-url-container">
+            <a href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/base/jquery-ui.css" class="theme-link theme-url">
+                http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/base/jquery-ui.css</a>
+        </div>
+        <div class="example-container">
+            <h4>Buttons:</h4>
             <div id="buttons" class="example">
                 <a href="#">One</a>
                 <form>
@@ -65,8 +70,8 @@ It's well known that Google hosts several [popular javascript libraries](http://
                 </form>
             </div>
         </div>
-        <div>
-        <h4>Tabs:</h4>
+        <div class="example-container">
+            <h4>Tabs:</h4>
             <div id="tabs" class="example">
                 <ul>
                     <li><a href="#tabs-1">Nunc tincidunt</a></li>
@@ -85,12 +90,12 @@ It's well known that Google hosts several [popular javascript libraries](http://
                 </div>
             </div>
         </div>
-        <div>
+        <div class="example-container">
             <h4>Date Picker:</h4>
             <div id="date-picker" class="example"></div>
             <h4><a id="dialog" href="#">Show Dialog</a></h4>
         </div>
-        <div>
+        <div class="example-container">
             <h4>Accordion</h4>
             <div id="accordion" class="example">
                 <h3><a href="#">Section 1</a></h3>
@@ -157,10 +162,11 @@ $(function() {
     $(".preview").click(function() {
         var theme = $(this).attr("href").substring(1);
         var themeName = $(this).text();
-        var url = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/" + theme + "/jquery-ui.css";
+        var themeUrl = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/" + theme + "/jquery-ui.css";
         
         $("#theme-name").text(themeName);
-        $("#theme").attr("href", url);
+        $(".theme-link").attr("href", themeUrl);
+        $(".theme-url").text(themeUrl);
         $(this)
             .parents("ul").find(".selected").removeClass("selected").end().end()
             .addClass("selected");
