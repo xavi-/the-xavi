@@ -1,0 +1,30 @@
+(: #:title:# ~ Running a Ruby on Rails app from GitHub :)
+(: markdown ~
+## Running a Ruby on Rails app from GitHub
+
+January 12, 2011
+
+I'm not a rails developer, but every once in a while I have get a rails app running.  I always forget how to start it, so here's a little reminder.
+
+First make sure Ruby and [RubyGem](http://docs.rubygems.org/read/chapter/3) are installed.  Most OSs (i.e. OSX and Ubuntu) have Ruby preinstalled so this shouldn't be too much trouble.
+
+Once RubyGem is installed, run the following commands to install rails:
+
+    sudo gem update --system
+    sudo gem install rails
+    sudo gem update rake
+    sudo gem update sqlite3-ruby
+{: .command-line}
+
+After rails is installed, here are the list of commands to get everything running:
+
+    git clone git://github.com/fancy/pants-app
+    cd pants-app
+    bundle install
+    rake db:setup
+    rails server
+{: .command-line}
+
+The rails app should now be running.  Just navigate to `localhost:3000` in your browser.  Easy-peasy.
+:)
+<div id="disqus_thread"></div><script type="text/javascript" defer="defer" src="http://disqus.com/forums/xaviramirez/embed.js"></script><noscript><a href="http://xaviramirez.disqus.com/?url=ref">View the discussion thread.</a></noscript>
