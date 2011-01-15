@@ -52,14 +52,14 @@ document.write(unescape(&quot;%3Cscript src='&quot; + gaJsHost + &quot;google-an
 &lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot;&gt;
 try {
-var pageTracker = _gat._getTracker(&quot;UA-4384857-1&quot;);
+var pageTracker = _gat._getTracker(&quot;UA-XXXXXXX-X&quot;);
 pageTracker._trackPageview();
 } catch(err) {}&lt;/script&gt;</pre>
 <h5><a name="non-secure">Non-secure Snippet: I use this version on my site</a></h5>
 <pre>&lt;script src=&quot;http://www.google-analytics.com/ga.js&quot; type=&quot;text/javascript&quot; /&gt; 
 &lt;script type=&quot;text/javascript&quot;&gt;
 //&lt;![CDATA[
-    try { var pageTracker = _gat._getTracker(&quot;UA-4384857-1&quot;); pageTracker._trackPageview(); } catch(err) {}
+    try { var pageTracker = _gat._getTracker(&quot;UA-XXXXXXX-X&quot;); pageTracker._trackPageview(); } catch(err) {}
 //]]&gt;
 &lt;/script&gt;</pre>
 <h5><a name="ideal">Ideal Snippet</a></h5>
@@ -69,7 +69,7 @@ pageTracker._trackPageview();
     _g.type = &quot;text/javascript&quot;;
     _g.src = ((location.protocol == &quot;https:&quot;) ? &quot;https://ssl.&quot; : &quot;http://www.&quot;) + &quot;google-analytics.com/ga.js&quot;;
     document.getElementsByTagName('head')[0].appendChild(_g);
-    try { _gat._getTracker(&quot;UA-4384857-1&quot;)._trackPageview(); } catch(err) {}
+    try { _gat._getTracker(&quot;UA-XXXXXXX-X&quot;)._trackPageview(); } catch(err) {}
 //]]&gt;
 &lt;/script&gt;</pre>
 </div>
