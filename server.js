@@ -85,6 +85,8 @@ srv.urls["/articles/trouble-with-touch-events-jquery"] =
     DefaultBindHandler("./content/articles/trouble-with-touch-events-jquery.html");
 srv.urls["/articles/get-around-cross-domain-restrictions"] = 
     DefaultBindHandler("./content/articles/get-around-cross-domain-restrictions.html");
+srv.urls["/articles/running-rails-app-from-github"] = 
+    DefaultBindHandler("./content/articles/running-rails-app-from-github.html");
 
 srv.urls["/drag-shapes"] =
 srv.urls["/drag-shapes/"] =
