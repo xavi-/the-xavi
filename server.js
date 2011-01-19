@@ -65,6 +65,7 @@ srv.urls["/tv-schedule-downloader"] = DefaultBindHandler("./content/tv-schedule-
 srv.urls["/visual-sort"] = DefaultBindHandler("./content/visual-sort.html", "visual-sort");
 
 srv.urls["/interview"] = srv.staticFileHandler("./content/interview.html", "text/html");
+srv.urls["/js-idiom"] = srv.urls["/js-idioms"] = srv.staticFileHandler("./content/js-idioms.html", "text/html");
 
 srv.urls["/articles"] = 
 srv.urls["/articles/"] = 

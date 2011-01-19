@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes" /> 
+<title>Javascript Idioms: Understanding Funny Code</title>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/redmond/jquery-ui.css" />
+<link rel="stylesheet" href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" />
+<style>
+    html {
+        position: absolute;
+        top: 0; bottom: 0;
+        left: 0; right: 0;
+        padding: 8px;
+    }
+    ul { margin: 0; }
+    .ui-widget {
+        margin: 0px;
+        height: 100%;
+    }
+    .slide-content,
+    .ui-widget-header,
+    .ui-widget-footer {
+        padding: 0 1em;
+    }
+    .slide-content {
+        overflow: auto;
+        padding-top: 1em;
+    }
+    .ui-widget-content {
+        height: 100%;
+        margin-top: -2px;
+        position: relative;
+        overflow: auto;
+    }
+    .ui-widget-footer {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+    }
+    .ui-widget-footer h4 {
+        margin: .5em;
+    }
+    .prettyprint>span {
+        opacity: .4;
+    }
+    .slide-done .prettyprint>span,
+    .slide-last-shown .prettyprint>span,
+    .prettyprint.slide-last-shown>span,
+    .prettyprint .slide-last-shown {
+        opacity: 1;
+    }
+    .prettyprint a {
+        text-decoration: underline !important;
+    }
+    .prettyprint a:hover span {
+        color: #00E !important;
+    }
+    table, td, th { border: thin solid black; border-collapse: collapse; }
+    table { width: 100%; font-weight: normal; }
+</style>
+</head>
+<body>
+<div data-role="slide">
+    <div data-role="content">
+        <h1>Javascript Idioms</h1>
+        <h2>Understanding Funny Code</h2>
+        by Xavi Ramirez
+    </div>
+</div>
+<div data-role="slide">
+    <div data-role="header"><h2>What will I talk about?</h2></div>
+    <div data-role="content">
+        <ul>
+            <li>I will <strong>NOT</strong> talk about js 101 idioms:
+<pre class="prettyprint lang-js" data-init="hidden">
+var name = {};
+name.spacing = function () { ... }; // Namespaces are helpful
+<span data-init="hidden">(function() { ... })(); // <a href="http://benalman.com/news/2010/11/immediately-invoked-function-expression/">Self executing FTW</a>!</span>
+</pre>
+            </li>
+            <li data-init="hidden">I will <strong>NOT</strong> talk about egregious abuses of syntax:
+<pre class="prettyprint lang-js">
+// These all return true
+<span data-init="hidden">2 == [[[[[2]]]]]; // <a href="http://stackoverflow.com/questions/1724255">Type coercion is a hell of a feature</a></span>
+<span data-init="hidden">2 === { valueOf: function() { return 1; } } + 1; // <a href="http://xavi.co/articles/fun-with-valueof-in-javascript">Fun with valueOf</a></span>
+<span data-init="hidden">2 === (alert(1), "hi hi", "woo" + "poo", 2); // <a href="https://developer.mozilla.org/en/JavaScript/Reference/Operators/Special/Comma_Operator">The comma operator</a></span>
+</pre>
+            </li>
+            <li data-init="hidden">Middle ground: strange bit of syntax people actually use
+                <ul>
+                    <li>Abusing the Index (aka []) Operator</li>
+                    <li>Abusing Boolean Operators</li>
+                    <li>Abusing Unary Operators</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div data-role="slide">
+    <div data-role="header"><h2>Abusing the Index (aka []) Operator</h2></div>
+    <div data-role="content">
+        <ul>
+            <li>What is the [] operator?
+<pre class="prettyprint lang-js">
+var a = [ 1, 2 ], o = { hi: 1, bye: 2 };
+<span data-init="hidden">a[0] === o["hi"]; // Works on both arrays and objects</span>
+<span data-init="hidden">a[1] === a["1"]; // <a href="http://xavi.co/articles/fun-with-tostring-in-javascript">Always takes a string</a></span>
+<span data-init="hidden">o["hi"] === o.hi; // An alternative to the . operator</span>
+</pre>
+            </li>
+            <li data-init="hidden">Real uses of []:
+<pre data-init="hidden" class="prettyprint lang-js">
+var join = "join"; b = [ "1", "2", "3" ][join](); // Samas [ ... ].join();
+<span data-init="hidden">[ "height", "width" ].forEach(function(elem) {
+    obj[elem] = function() { ... }
+});</span>
+<span data-init="hidden">var a = foo[wuddiz ? "fun1" : "fun2"](); // bool ? ifTrue : ifFalse </span>
+</pre>
+            </li>
+            <li data-init="hidden">Why abuse the [] operator?
+<pre data-init="hidden" class="prettyprint lang-js">
+// Examples 2 and 3 are much smaller versus the alternative:
+if(wuddiz) { a = foo.fun1(); } else { a = foo.fun2(); } // ~15 char savings
+<span data-init="hidden">var a = "join"; b = ["1","2","3"][a](); // 2-char savings when minimized</span>
+</pre>
+            </li>
+        </ul>
+    </div>
+</div>
+<div data-role="slide">
+    <div data-role="header"><h2>Abusing Boolean Operators</h2></div>
+    <div data-role="content">
+        <ul>
+            <li>Relies on the falsey/truthy nature of a javascript value
+<pre data-init="hidden" class="prettyprint lang-js">
+// Falsey values
+false; 0; ""; null; undefined; Number.NaN;
+<span data-init="hidden">// Truthy values: anything not falsey
+[]; {}; "0"; etc...</span>
+</pre>
+            </li>
+            <li data-init="hidden">Truthiness in action
+<pre data-init="hidden" class="prettyprint lang-js">
+!!value; // truthy/falsey to boolean
+<span data-init="hidden">if(!some) { /* do it... */ } // variant if(!some.val)</span>
+<span data-init="hidden">var val = test || default;</span>
+<span data-init="hidden">function(val) { val || (val = default); ... } // same as if(!val) { val = default }</span>
+<span data-init="hidden">var b = (bar || {}).foo; // avoids null-pointer exception if bar == null</span>
+<span data-init="hidden">var b = bar &amp;&amp; bar.foo // Often called a guard (better alternative to the above)</span>
+</pre>
+            </li>
+            <li data-init="hidden">Common pitfall
+                <ul>
+                    <li data-init="hidden">False negatives (i.e. sometimes 0, false, "", etc... are valid values)</li>
+                    <li data-init="hidden">Consider using foo == null or foo === undefined or arguments.length === 0</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div data-role="slide">
+    <div data-role="header"><h2>Abusing Unary Operators</h2></div>
+    <div data-role="content">
+        <ul>
+            <li data-init="hidden">Abuses of the plus (aka +) operator
+<pre data-init="hidden" class="prettyprint lang-js">
+// The unary + operator forces types into an int
+<span data-init="hidden">+"12" === 12;</span>
+<span data-init="hidden">+new Date(); // returns the current time in milliseconds (as a int)</span>
+<span data-init="hidden">+false === 0; // no actually uses this</span>
+<span data-init="hidden">12 + "" === "12"; // This is <strong>NOT</strong> the unary + operator</span>
+</pre>
+            </li>
+            <li data-init="hidden">Other unary operators
+<pre data-init="hidden" class="prettyprint lang-js">
+// A better? version of a.indexOf("i") === -1
+~"wee".indexOf("i"); // same as ~(-1) === 0;
+<span data-init="hidden">void((function() { alert(1); return 1e8; })()); // void always returns undefined</span>
+<span data-init="hidden">// Truncating numbers: 32.7 to 32</span>
+<span data-init="hidden">~~a;
+a >> 0;
+a | 0;</span>
+</pre>
+            </li>
+            <li data-init="hidden">The world of <a href="http://en.wikipedia.org/wiki/Bit_manipulation#Bit_twiddling">bitwiddling</a>: using bitwise operators for fun and profit
+                <ul data-init="hidden">
+                    <li>Not going to talk about it <span data-init="hidden">(but here's a great <a href="http://www-graphics.stanford.edu/~seander/bithacks.html">bitwiddling reference</a>)</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div data-role="slide">
+    <div data-role="header"><h2>Once last thing</h2></div>
+    <div data-role="content">
+        <ul>
+            <li data-init="hidden">Remember your order of operations:
+                <table style="margin-bottom: .5em">
+                    <thead><th>Precedence</th><th>Family</th><th>Operators</th></thead>
+                    <tfoot><tr><td colspan=3><a href="https://developer.mozilla.org/en/JavaScript/Reference/Operators/Operator_Precedence">A more complete table of operator precedence</a></td></tr></tfoot>
+                    <tbody>
+                        <tr><td>1</td><td>unary</td><td><code>+ - ! ~</code></td></tr>
+                        <tr><td>2</td><td>multiplicative</td><td><code>* % /</code></td></tr>
+                        <tr><td>3</td><td>add/sub</td><td><code>+ -</code></td></tr>
+                        <tr><td>4</td><td>equality</td><td><code>== != === !==</code></td></tr>
+                        <tr><td>5</td><td>logic-and</td><td><code>&amp;&amp;</code></td></tr>
+                        <tr><td>6</td><td>logic-or</td><td><code>||</code></td></tr>
+                    </tbody>
+                </table>
+            </li>
+            <li data-init="hidden">Slightly confusing examples:
+<pre data-init="hidden" class="prettyprint lang-js">
+(to || from) + 1 || a.length;
+<span data-init="hidden">win ? ("pageXOffset" in win) ? win[ i ? "pageYOffset" : "pageXOffset" ] :
+	jQuery.support.boxModel && win.document.documentElement[ method ] ||
+		win.document.body[ method ] :
+	elem[ method ];</span>
+</pre>
+        </ul>
+    </div>
+</div>
+<div data-role="slide">
+    <div data-role="header"><h2>Questions?</h2></div>
+    <div data-role="content">
+        <div data-init="hidden">
+            <h3>Thank you</h3>
+            <ul>
+                <li><a href="mailto:xavi.rmz@gmail.com">xavi.rmz@gmail.com</a></li>
+                <li><a href="http://github.com/xavi-">github.com/xavi-</a></li>
+                <li><a href="http://twitter.com/xavi_">@xavi_</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div data-role="footer">
+    <h4>HTML5 Gaming Meetup | 19 Jan 2011</h4>
+    <h4>JavaScript Idioms (<a href="http://xavi.co/js-idioms">xavi.co/js-idioms</a>)</h4>
+</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://github.com/cowboy/jquery-hashchange/raw/master/jquery.ba-hashchange.min.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script>
+$.fn.orElse = function(def) {
+    if(this.length === 0) { def.call(this); }
+    
+    return this;
+}
+
+$("[data-role]")
+    .filter("[data-role=slide]")
+        .addClass("ui-widget-content ui-corner-all")
+        .find("[data-init=hidden]").hide().end()
+        .not(":first").hide().end()
+        .append($("[data-role=footer]").addClass("ui-widget-footer ui-state-default ui-corner-all"))
+        .scroll(function() { // Handle vertical overflow of content
+            $("[data-role=footer]", this).css("bottom", -$(this).scrollTop());
+        })
+    .end()
+    .filter("[data-role=header]")
+        .addClass("ui-widget-header ui-corner-all")
+        .children("h2").addClass("ui-dialog-title").end()
+    .end()
+    .filter("[data-role=content]")
+        .addClass("slide-content")
+        // Ensure that the vertical scrollbar appears at the right height
+        .css("margin-bottom", $("[data-role=footer]").outerHeight())
+    .end()
+
+$("body")
+    .addClass("ui-widget ui-state-default ui-corner-all")
+    .attr("tabindex", "1")
+    .bind("slide-forward slide-back", function() { // stop current animation
+        if($.timers.length) { $("[data-role=slide], [data-init=hidden]").stop(true, true) }
+    })
+    .bind("slide-forward", function() {
+        $(".slide-last-shown").removeClass("slide-last-shown");
+        
+        $("[data-role=slide]:visible")
+            .find("[data-init=hidden]:hidden")
+            .first().addClass("slide-last-shown").fadeIn().end()
+            .orElse(function() {
+                $("[data-role=slide]").not(":last").filter(":visible")
+                    .addClass("slide-done")
+                    .fadeOut(function() { $(this).next().addClass("slide-last-shown").fadeIn("fast"); })
+            });
+    })
+    .bind("slide-back", function() {
+        $(".slide-last-shown").removeClass("slide-last-shown");
+        
+        $("[data-role=slide]:visible")
+            .find("[data-init=hidden]:visible")
+            .eq(-2).addClass("slide-last-shown").end()
+            .last().fadeOut().end()
+            .orElse(function() {
+                $("[data-role=slide]").not(":first").filter(":visible")
+                    .removeClass("slide-done")
+                    .fadeOut(function() { $(this).prev().addClass("slide-last-hidden").fadeIn("fast"); })
+            });
+    })
+    .live("click touchstart MozTouchDown", function() { $(this).trigger("slide-forward") })
+    .live("keyup", function(e) {
+        $(this).trigger(e.which === $.ui.keyCode.LEFT ? "slide-back" : "slide-forward" );
+    })
+    .focus();
+
+prettyPrint();
+</script>
+</body>
+</html>
