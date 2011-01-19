@@ -149,11 +149,12 @@ false; 0; ""; null; undefined; Number.NaN;
             <li data-init="hidden">Truthiness in action
 <pre data-init="hidden" class="prettyprint lang-js">
 !!value; // truthy/falsey to boolean
-<span data-init="hidden">if(!some) { /* do it... */ } // variant if(!some.val)</span>
-<span data-init="hidden">var val = test || default;</span>
-<span data-init="hidden">function(val) { val || (val = default); ... } // same as if(!val) { val = default }</span>
-<span data-init="hidden">var b = (bar || {}).foo; // avoids null-pointer exception if bar == null</span>
-<span data-init="hidden">var b = bar &amp;&amp; bar.foo // Often called a guard (better alternative to the above)</span>
+<span data-init="hidden">if(!obj) { /* do it... */ } // variant if(!obj.prop)</span>
+<span data-init="hidden">var val = test || default(); // means if(test) { val = test; } else { val = default(); }</span>
+<span data-init="hidden">function(val) { val || (val = default(); ... } // means if(!val) { val = default(); }</span>
+<span data-init="hidden">var b = (obj || {}).prop; // avoids null-pointer exception if obj is null</span>
+<span data-init="hidden">var b = obj &amp;&amp; obj.prop // Often called a guard (better alternative to the above)</span>
+<span data-init="hidden">window.console &amp;&amp; console.log("wee") // means if(window.console) { console.log("wee"); }</span>
 </pre>
             </li>
             <li data-init="hidden">Common pitfall
