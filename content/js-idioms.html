@@ -25,6 +25,11 @@
     .slide-content {
         overflow: auto;
         padding-top: 1em;
+        padding-bottom: .2em;
+    }
+    .slide-code {
+        font-family: monospace;
+        font-size: 110%;
     }
     .ui-widget-content {
         height: 100%;
@@ -58,6 +63,7 @@
     }
     table, td, th { border: thin solid black; border-collapse: collapse; }
     table { width: 100%; font-weight: normal; }
+    tfoot { font-size: 80%; }
 </style>
 </head>
 <body>
@@ -153,7 +159,7 @@ false; 0; ""; null; undefined; Number.NaN;
             <li data-init="hidden">Common pitfall
                 <ul>
                     <li data-init="hidden">False negatives (i.e. sometimes 0, false, "", etc... are valid values)</li>
-                    <li data-init="hidden">Consider using foo == null or foo === undefined or arguments.length === 0</li>
+                    <li data-init="hidden">Consider using <span class="ui-state-highlight slide-code">foo == null</span> or <span class="ui-state-highlight slide-code">foo === undefined</span> or <span class="ui-state-highlight slide-code">arguments.length === 0</span></li>
                 </ul>
             </li>
         </ul>
@@ -213,7 +219,7 @@ a | 0;</span>
 <pre data-init="hidden" class="prettyprint lang-js">
 (to || from) + 1 || a.length;
 <span data-init="hidden">win ? ("pageXOffset" in win) ? win[ i ? "pageYOffset" : "pageXOffset" ] :
-	jQuery.support.boxModel && win.document.documentElement[ method ] ||
+	jQuery.support.boxModel &amp;&amp; win.document.documentElement[ method ] ||
 		win.document.body[ method ] :
 	elem[ method ];</span>
 </pre>
