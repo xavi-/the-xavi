@@ -46,12 +46,15 @@
     .ui-widget-footer h4 {
         margin: .5em;
     }
-    .prettyprint>span {
+    .prettyprint>span,
+    .prettyprint>a {
         opacity: .4;
+        line-height: 1.1em;
     }
     .slide-done .prettyprint>span,
     .slide-last-shown .prettyprint>span,
     .prettyprint.slide-last-shown>span,
+    .prettyprint.slide-last-shown>a,
     .prettyprint .slide-last-shown {
         opacity: 1;
     }
@@ -117,7 +120,7 @@ var a = [ 1, 2 ], o = { hi: 1, bye: 2 };
             </li>
             <li data-init="hidden">Real uses of []:
 <pre data-init="hidden" class="prettyprint lang-js">
-var join = "join"; b = [ "1", "2", "3" ][join](); // Samas [ ... ].join();
+var join = "join"; b = [ "1", "2", "3" ][join](); // Same as [ ... ].join();
 <span data-init="hidden">[ "height", "width" ].forEach(function(elem) {
     obj[elem] = function() { ... }
 });</span>
@@ -148,7 +151,7 @@ false; 0; ""; null; undefined; Number.NaN;
             </li>
             <li data-init="hidden">Truthiness in action
 <pre data-init="hidden" class="prettyprint lang-js">
-!!value; // truthy/falsey to boolean
+!!val; // truthy/falsey to boolean (e.x. <a href="http://api.jquery.com/toggleClass">$("div").toggleClass("foo", !!val)</a>)
 <span data-init="hidden">if(!obj) { /* do it... */ } // variant if(!obj.prop)</span>
 <span data-init="hidden">var val = test || default(); // means if(test) { val = test; } else { val = default(); }</span>
 <span data-init="hidden">function(val) { val || (val = default(); ... } // means if(!val) { val = default(); }</span>
@@ -231,12 +234,12 @@ a | 0;</span>
     <div data-role="header"><h2>Questions?</h2></div>
     <div data-role="content">
         <div data-init="hidden">
-            <h3>Thank you</h3>
             <ul>
                 <li><a href="mailto:xavi.rmz@gmail.com">xavi.rmz@gmail.com</a></li>
                 <li><a href="http://github.com/xavi-">github.com/xavi-</a></li>
                 <li><a href="http://twitter.com/xavi_">@xavi_</a></li>
             </ul>
+            <h3 data-init="hidden" style="text-align: center; font-size: 2em">Thank you</h3>
         </div>
     </div>
 </div>
