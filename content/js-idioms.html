@@ -52,6 +52,7 @@
         line-height: 1.1em;
     }
     .slide-done .prettyprint>span,
+    .slide-done .prettyprint>a,
     .slide-last-shown .prettyprint>span,
     .prettyprint.slide-last-shown>span,
     .prettyprint.slide-last-shown>a,
@@ -152,14 +153,35 @@ false; 0; ""; null; undefined; Number.NaN;
             <li data-init="hidden">Truthiness in action
 <pre data-init="hidden" class="prettyprint lang-js">
 !!val; // truthy/falsey to boolean (e.x. <a href="http://api.jquery.com/toggleClass">$("div").toggleClass("foo", !!val)</a>)
-<span data-init="hidden">if(!obj) { /* do it... */ } // variant if(!obj.prop)</span>
-<span data-init="hidden">var val = test || default(); // means if(test) { val = test; } else { val = default(); }</span>
-<span data-init="hidden">function(val) { val || (val = default(); ... } // means if(!val) { val = default(); }</span>
+<span data-init="hidden">if(!obj) { /* do it... */ }</span>
+<span data-init="hidden">if(!obj.prop) { /* do it... */ }</span>
 <span data-init="hidden">var b = (obj || {}).prop; // avoids null-pointer exception if obj is null</span>
 <span data-init="hidden">var b = obj &amp;&amp; obj.prop // Often called a guard (better alternative to the above)</span>
 <span data-init="hidden">window.console &amp;&amp; console.log("wee") // means if(window.console) { console.log("wee"); }</span>
 </pre>
             </li>
+        </ul>
+    </div>
+</div>
+<div data-role="slide">
+    <div data-role="header"><h2>Function and Boolean Synergy</h2></div>
+    <div data-role="content">
+        <ul>
+            <li data-init="hidden">Prevents unnecessary calculations
+<pre data-init="hidden" class="prettyprint lang-js">
+<span data-init="hidden">var val = test || default(); // means if(test) { val = test; } else { val = default(); }</span>
+<span data-init="hidden">function(val) {
+    val || (val = default(); // means if(val) { val } else { val = default(); }
+    ...</span>                      <span data-init="hidden">// or more concisely if(!val) { val = default(); }
+}</span>
+<span data-init="hidden">var val = needCalc &amp;&amp; (function() {
+    var fact1200 = 1;
+    for(var i = 0; i &lt; 1200; i++) { fact1200 *= i; }
+    return fact1200;
+})();
+</pre>
+            </li>
+            <li data-init="hidden">Remember variables are function scoped</li>
             <li data-init="hidden">Common pitfall
                 <ul>
                     <li data-init="hidden">False negatives (i.e. sometimes 0, false, "", etc... are valid values)</li>
@@ -202,7 +224,7 @@ a | 0;</span>
     </div>
 </div>
 <div data-role="slide">
-    <div data-role="header"><h2>Once last thing</h2></div>
+    <div data-role="header"><h2>Putting it All Together</h2></div>
     <div data-role="content">
         <ul>
             <li data-init="hidden">Remember your order of operations:
@@ -222,11 +244,114 @@ a | 0;</span>
             <li data-init="hidden">Slightly confusing examples:
 <pre data-init="hidden" class="prettyprint lang-js">
 (to || from) + 1 || a.length;
-<span data-init="hidden">win ? ("pageXOffset" in win) ? win[ i ? "pageYOffset" : "pageXOffset" ] :
-	jQuery.support.boxModel &amp;&amp; win.document.documentElement[ method ] ||
-		win.document.body[ method ] :
-	elem[ method ];</span>
+<span data-init="hidden">name = test &amp;&amp; cache[key] || default;</span> <span data-init="hidden">// same as if(test) { name = cache[key]; } else { name = default; }</span>
 </pre>
+        </ul>
+    </div>
+</div>
+<div data-role="slide">
+    <div data-role="header"><h2>One last thing: dealing with crazy</h2></div>
+    <div data-role="content">
+        <ul>
+            <li data-init="hidden">What to do if you see this:
+<pre data-init="hidden" class="prettyprint lang-js">
+var method = "scroll" + name;
+return win ? ("pageXOffset" in win) ? win[ isScrollTop ? "pageYOffset" : "pageXOffset" ] :
+    jQuery.support.boxModel &amp;&amp; win.document.documentElement[ method ] ||
+            win.document.body[ method ] :
+    elem[ method ];
+</pre>
+            </li>
+            <li data-init="hidden">Step 1: Add some space
+<pre data-init="hidden" class="prettyprint lang-js">
+var method = "scroll" + name;
+return win ? 
+        ("pageXOffset" in win) ?
+            win[ isScrollTop ? "pageYOffset" : "pageXOffset" ]
+            : jQuery.support.boxModel &amp;&amp;
+                win.document.documentElement[ method ] || win.document.body[ method ]
+    : elem[ method ];
+</pre>
+            </li>
+            <li data-init="hidden">Step 2: Simplify
+<pre data-init="hidden" class="prettyprint lang-js">
+var method = "scroll" + name;
+var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
+return win ? 
+        ("pageXOffset" in win) ?
+            win[ offset ]
+            : jQuery.support.boxModel &amp;&amp;
+                win.document.documentElement[ method ] || win.document.body[ method ]
+    : elem[ method ];
+</pre>
+            </li>
+            <li data-init="hidden">Step 3: Clean up
+<pre data-init="hidden" class="prettyprint lang-js">
+var method = "scroll" + name;
+if(win) {
+    if("pageXOffset" in win) {
+        var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
+        return win[ offset ]
+    } else {
+        return jQuery.support.boxModel &amp;&amp;
+            win.document.documentElement[ method ] || win.document.body[ method ]
+    }
+} else {
+    return elem[ method ];
+}
+</pre>
+            </li>
+            <li data-init="hidden">Step 4: Identify patterns
+<pre data-init="hidden" class="prettyprint lang-js">
+var method = "scroll" + name;
+if(win) {
+    if("pageXOffset" in win) {
+        var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
+        return win[ offset ]
+    } else {
+        if(jQuery.support.boxModel) {
+            return win.document.documentElement[ method ];
+        } else {
+            return win.document.body[ method ];
+        }
+    }
+} else {
+    return elem[ method ];
+}
+</pre>
+            </li>
+            <li data-init="hidden">Step 5: Simplify and clean up
+<pre data-init="hidden" class="prettyprint lang-js">
+var method = "scroll" + name;
+if(win) {
+    if("pageXOffset" in win) {
+        var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
+        return win[ offset ]
+    } else if(jQuery.support.boxModel) {
+        return win.document.documentElement[ method ];
+    } else {
+        return win.document.body[ method ];
+    }
+} else {
+    return elem[ method ];
+}
+</pre>
+            </li>
+            <li data-init="hidden">Step N: Simplify and clean up
+<pre data-init="hidden" class="prettyprint lang-js">
+var method = "scroll" + name;
+if(!win) {
+    return elem[ method ];
+} else if("pageXOffset" in win) {
+    var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
+    return win[ offset ]
+} else if(jQuery.support.boxModel) {
+     win.document.documentElement[ method ];
+} else {
+    win.document.body[ method ];
+}
+</pre>
+            </li>
         </ul>
     </div>
 </div>
@@ -275,7 +400,7 @@ $("[data-role]")
     .filter("[data-role=content]")
         .addClass("slide-content")
         // Ensure that the vertical scrollbar appears at the right height
-        .css("margin-bottom", $("[data-role=footer]").outerHeight())
+        .css("margin-bottom", $("[data-role=footer]").outerHeight() + 7)
     .end()
 
 $("body")
