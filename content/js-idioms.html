@@ -169,16 +169,16 @@ false; 0; ""; null; undefined; Number.NaN;
         <ul>
             <li data-init="hidden">Prevents unnecessary calculations
 <pre data-init="hidden" class="prettyprint lang-js">
-<span data-init="hidden">var val = test || default(); // means if(test) { val = test; } else { val = default(); }</span>
+<span data-init="hidden">var val = input || default(); // means if(test) { val = test; } else { val = default(); }</span>
 <span data-init="hidden">function(val) {
-    val || (val = default(); // means if(val) { val } else { val = default(); }
+    val || (val = default()); // means if(val) { val } else { val = default(); }
     ...</span>                      <span data-init="hidden">// or more concisely if(!val) { val = default(); }
 }</span>
-<span data-init="hidden">var val = needCalc &amp;&amp; (function() {
+<span data-init="hidden">var val = (input &lt; 100) &amp;&amp; (function() {
     var fact1200 = 1;
     for(var i = 0; i &lt; 1200; i++) { fact1200 *= i; }
     return fact1200;
-})();
+})();</span> <span data-init="hidden">// Similar to if(input &lt; 100) { ... }</span>
 </pre>
             </li>
             <li data-init="hidden">Remember variables are function scoped</li>
@@ -202,6 +202,8 @@ false; 0; ""; null; undefined; Number.NaN;
 <span data-init="hidden">+new Date(); // returns the current time in milliseconds (as a int)</span>
 <span data-init="hidden">+false === 0; // no actually uses this</span>
 <span data-init="hidden">12 + "" === "12"; // This is <strong>NOT</strong> the unary + operator</span>
+<span data-init="hidden">new Date() + "" === "Wed Feb 16 2011 17:45:23 GMT-0500 (EST)"; // returns current time</span>
+<span data-init="hidden">false + "" === "false"; // Rarely used</span>
 </pre>
             </li>
             <li data-init="hidden">Other unary operators
@@ -243,8 +245,10 @@ a | 0;</span>
             </li>
             <li data-init="hidden">Slightly confusing examples:
 <pre data-init="hidden" class="prettyprint lang-js">
-(to || from) + 1 || a.length;
-<span data-init="hidden">name = test &amp;&amp; cache[key] || default;</span> <span data-init="hidden">// same as if(test) { name = cache[key]; } else { name = default; }</span>
+2 + 3 * 4 <span data-init="hidden">=== 14;</span>
+<span data-init="hidden">(+to || +from) + 1 || a.length;</span>
+<span data-init="hidden">name = test &amp;&amp; cache[key] || default;</span>
+<span data-init="hidden">// ^ same as if(test) { name = cache[key]; } else { name = default; }</span>
 </pre>
         </ul>
     </div>
@@ -265,11 +269,10 @@ return win ? ("pageXOffset" in win) ? win[ isScrollTop ? "pageYOffset" : "pageXO
             <li data-init="hidden">Step 1: Add some space
 <pre data-init="hidden" class="prettyprint lang-js">
 var method = "scroll" + name;
-return win ? 
-        ("pageXOffset" in win) ?
-            win[ isScrollTop ? "pageYOffset" : "pageXOffset" ]
-            : jQuery.support.boxModel &amp;&amp;
-                win.document.documentElement[ method ] || win.document.body[ method ]
+return win  
+    ? ("pageXOffset" in win) 
+        ? win[ isScrollTop ? "pageYOffset" : "pageXOffset" ]
+        : jQuery.support.boxModel &amp;&amp; win.document.documentElement[ method ] || win.document.body[ method ]
     : elem[ method ];
 </pre>
             </li>
@@ -277,11 +280,10 @@ return win ?
 <pre data-init="hidden" class="prettyprint lang-js">
 var method = "scroll" + name;
 var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
-return win ? 
-        ("pageXOffset" in win) ?
-            win[ offset ]
-            : jQuery.support.boxModel &amp;&amp;
-                win.document.documentElement[ method ] || win.document.body[ method ]
+return win 
+    ? ("pageXOffset" in win)
+        ? win[ offset ]
+        : jQuery.support.boxModel &amp;&amp; win.document.documentElement[ method ] || win.document.body[ method ]
     : elem[ method ];
 </pre>
             </li>
@@ -293,8 +295,7 @@ if(win) {
         var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
         return win[ offset ]
     } else {
-        return jQuery.support.boxModel &amp;&amp;
-            win.document.documentElement[ method ] || win.document.body[ method ]
+        return jQuery.support.boxModel &amp;&amp; win.document.documentElement[ method ] || win.document.body[ method ]
     }
 } else {
     return elem[ method ];
