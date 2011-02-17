@@ -279,10 +279,10 @@ return win
             <li data-init="hidden">Step 2: Simplify
 <pre data-init="hidden" class="prettyprint lang-js">
 var method = "scroll" + name;
-var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
+var offsetType = isScrollTop ? "pageYOffset" : "pageXOffset";
 return win 
     ? ("pageXOffset" in win)
-        ? win[ offset ]
+        ? win[ offsetType ]
         : jQuery.support.boxModel &amp;&amp; win.document.documentElement[ method ] || win.document.body[ method ]
     : elem[ method ];
 </pre>
@@ -290,12 +290,12 @@ return win
             <li data-init="hidden">Step 3: Clean up
 <pre data-init="hidden" class="prettyprint lang-js">
 var method = "scroll" + name;
+var offsetType = isScrollTop ? "pageYOffset" : "pageXOffset";
 if(win) {
     if("pageXOffset" in win) {
-        var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
-        return win[ offset ]
+        return win[ offsetType ];
     } else {
-        return jQuery.support.boxModel &amp;&amp; win.document.documentElement[ method ] || win.document.body[ method ]
+        return jQuery.support.boxModel &amp;&amp; win.document.documentElement[ method ] || win.document.body[ method ];
     }
 } else {
     return elem[ method ];
@@ -305,10 +305,10 @@ if(win) {
             <li data-init="hidden">Step 4: Identify patterns
 <pre data-init="hidden" class="prettyprint lang-js">
 var method = "scroll" + name;
+var offsetType = w ? "pageYOffset" : "pageXOffset";
 if(win) {
     if("pageXOffset" in win) {
-        var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
-        return win[ offset ]
+        return win[ offsetType ];
     } else {
         if(jQuery.support.boxModel) {
             return win.document.documentElement[ method ];
@@ -324,10 +324,10 @@ if(win) {
             <li data-init="hidden">Step 5: Simplify and clean up
 <pre data-init="hidden" class="prettyprint lang-js">
 var method = "scroll" + name;
+var offsetType = isScrollTop ? "pageYOffset" : "pageXOffset";
 if(win) {
     if("pageXOffset" in win) {
-        var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
-        return win[ offset ]
+        return win[ offsetType ];
     } else if(jQuery.support.boxModel) {
         return win.document.documentElement[ method ];
     } else {
@@ -341,11 +341,11 @@ if(win) {
             <li data-init="hidden">Step N: Simplify and clean up
 <pre data-init="hidden" class="prettyprint lang-js">
 var method = "scroll" + name;
+var offsetType = isScrollTop ? "pageYOffset" : "pageXOffset";
 if(!win) {
     return elem[ method ];
 } else if("pageXOffset" in win) {
-    var offset = isScrollTop ? "pageYOffset" : "pageXOffset"
-    return win[ offset ]
+    return win[ offsetType ];
 } else if(jQuery.support.boxModel) {
      win.document.documentElement[ method ];
 } else {
