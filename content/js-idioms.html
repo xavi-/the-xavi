@@ -441,6 +441,29 @@ $("body")
     })
     .focus();
 
+(function(curHash) {
+    $("body")
+        .bind("slide-back", function() {
+            curHash = Math.max(curHash - 1, 0);
+            if(location.hash === "" && curHash === 0) { return; }
+            location.hash = "#" + curHash;
+        })
+        .bind("slide-forward", function() { location.hash = "#" + (++curHash); });
+        
+    $(window)
+        .hashchange(function() {
+            var temp = +location.hash.substr(1);
+            
+            if(temp === curHash) { return; }
+            else if(temp > curHash) { $("body").trigger("slide-forward"); }
+            else { $("body").trigger("slide-back"); }
+            
+            curHash = temp;
+        });
+    
+    if(location.hash !== "") { location.hash = ""; }
+})(0);
+
 prettyPrint();
 </script>
 </body>
