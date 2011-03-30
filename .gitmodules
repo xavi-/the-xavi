@@ -7,3 +7,6 @@
 [submodule "libraries/xavlib"]
 	path = libraries/xavlib
 	url = git://github.com/Xavi-/xavlib.git
+[submodule "libraries/beeline"]
+	path = libraries/beeline
+	url = git://github.com/Xavi-/beeline.git
