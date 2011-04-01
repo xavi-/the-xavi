@@ -96,9 +96,9 @@ var router = bee.line({
         DefaultBindHandler("./content/drag-shapes/comet-drag.html", require("./apps/comet-drag").start(chn))
 });
 
-var server = http.createServer(router);
+chn.init(router);
 
-//chn.start(server);
+var server = http.createServer(router);
 
 server.listen(8004);
 console.log("Serving xavi.co on port 8004");
