@@ -98,6 +98,7 @@ var router = bee.line({
 
 chn.init(router);
 
+process.title = "node-xavi.co";
 var server = http.createServer(router);
 
 server.listen(8004);
