@@ -1,10 +1,10 @@
 var http = require("http");
 var url = require("url");
 var fs = require("fs");
-var bind = require("./libraries/bind-js");
-var markdown = require("./libraries/markdown-js/lib/markdown");
+var bind = require("bind");
+var markdown = require("markdown").markdown;
 var chn = require("./libraries/xavlib/channel");
-var bee = require("./libraries/beeline");
+var bee = require("beeline");
 
 process.title = "node-xavi.co";
 
@@ -30,7 +30,7 @@ var DefaultBindHandler = (function() {
     }
     
     function bindMarkdown(callback, val) {
-        callback(markdown.renderJsonML(markdown.toHTMLTree(val,"Maruku")), {}, true); 
+        callback(markdown.toHTML(val,"Maruku"), {}, true); 
     }
 
     return function(path, id, extContext) {
@@ -47,14 +47,14 @@ var DefaultBindHandler = (function() {
     };
 })();
 
-var router = bee.line({
+var router = bee.route({
     "`404`": DefaultBindHandler("./content/404.html"),
     
-    "/robots.txt": bee.staticFileHandler("./content/robots.txt", "text/plain"),
-    "/client.js": bee.staticFileHandler("./libraries/xavlib/channel/client.js", "application/x-javascript"),
+    "/robots.txt": bee.staticFile("./content/robots.txt", "text/plain"),
+    "/client.js": bee.staticFile("./libraries/xavlib/channel/client.js", "application/x-javascript"),
     
-    "r`^/pics/(.*)$`": bee.staticDirHandler("./content/pics/", { "gif": "image/gif", "png": "image/png",
-                                                                 "jpg": "image/jpeg", "jpeg": "image/jpeg" }),
+    "r`^/pics/(.*)$`": bee.staticDir("./content/pics/", { ".gif": "image/gif", ".png": "image/png",
+                                                          ".jpg": "image/jpeg", ".jpeg": "image/jpeg" }),
     
     "/ /index.html": DefaultBindHandler("./content/index.html", "home"),
     "/about-me": DefaultBindHandler("./content/about-me.html", "about-me"),
@@ -64,8 +64,8 @@ var router = bee.line({
     "/tv-schedule-downloader": DefaultBindHandler("./content/tv-schedule-downloader.html", "tv-download"),
     "/visual-sort": DefaultBindHandler("./content/visual-sort.html", "visual-sort"),
     
-    "/interview": bee.staticFileHandler("./content/interview.html", "text/html"),
-    "/js-idiom /js-idioms": bee.staticFileHandler("./content/js-idioms.html", "text/html"),
+    "/interview": bee.staticFile("./content/interview.html", "text/html"),
+    "/js-idiom /js-idioms": bee.staticFile("./content/js-idioms.html", "text/html"),
     
     "/articles /articles/ /articles/index.html": DefaultBindHandler("./content/articles/index.html", "articles"),
     "/articles/operation-is-not-supported-code-9":
