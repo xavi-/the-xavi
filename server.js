@@ -53,6 +53,8 @@ var router = bee.route({
     "/robots.txt": bee.staticFile("./content/robots.txt", "text/plain"),
     "/client.js": bee.staticFile("./libraries/xavlib/channel/client.js", "application/x-javascript"),
     
+    "/css/`path...`": bee.staticDir("./content/css/", { ".css": "text/css" }),
+
     "r`^/pics/(.*)$`": bee.staticDir("./content/pics/", { ".gif": "image/gif", ".png": "image/png",
                                                           ".jpg": "image/jpeg", ".jpeg": "image/jpeg" }),
     

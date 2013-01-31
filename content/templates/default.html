@@ -7,15 +7,19 @@
     <meta name="keywords" content="Xavi Ramirez" />
     <link rel="icon" type="image/png" href="http://www.gravatar.com/avatar/4df1cfae6e8c7fbdb013818785318aa7?s=16" />
     <title>Xavi - #:title:#</title>
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
     <style>
-        #content { display: table; }
+        html, body, main { height: 100%; }
+        body { background: #bed4d0; }
+        main { display: table; background: #f8fbfd; width: 920px; padding: 0 1.5em; margin: auto; }
+        #content { margin: 1em 0;}
         #menu { clear: both; }
     </style>
     #:head:#
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 </head>
 <body>
-	
+<main>
 <div id="content">
 	(: content ~ [: file ~ 404.html :] :)
 </div>
@@ -23,6 +27,7 @@
 <div id="menu">
 	(: file ~ ./content/templates/links.html :)
 </div>
+</main>
 #:tail:#
 <script type="text/javascript">
     var _gaq = _gaq || [];
