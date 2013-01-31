@@ -9,9 +9,6 @@
     "url": "git://github.com/Xavi-/the-xavi.git"
   },
   "main": "server.js",
-  "engines": {
-    "node": "~v0.4.10"
-  },
   "dependencies": {
     "beeline": "",
     "bind": "",
