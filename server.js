@@ -62,7 +62,6 @@ var router = bee.route({
     "/about-me": DefaultBindHandler("./content/about-me.html", "about-me"),
     "/resume": DefaultBindHandler("./content/resume.html", "resume"),
     "/key-remapper": DefaultBindHandler("./content/key-remapper.html", "key-map"),
-    "/magnetic-poetry": DefaultBindHandler("./content/magnetic-poetry.html", "mag-poetry"),
     "/tv-schedule-downloader": DefaultBindHandler("./content/tv-schedule-downloader.html", "tv-download"),
     "/visual-sort": DefaultBindHandler("./content/visual-sort.html", "visual-sort"),
     
