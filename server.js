@@ -57,7 +57,15 @@ var router = bee.route({
 
     "r`^/pics/(.*)$`": bee.staticDir("./content/pics/", { ".gif": "image/gif", ".png": "image/png",
                                                           ".jpg": "image/jpeg", ".jpeg": "image/jpeg" }),
-    
+
+     "/destinygg-chat": function(req, res) {
+        res.writeHead(301, { "Content-Length": 0, "Location": "/destinygg-chat/" })
+        res.end();
+    },
+    "/destinygg-chat/": bee.staticFile("./destinygg-chat/index.html", "text/html"),
+    "/destinygg-chat/`path...`":
+        bee.staticDir("./destinygg-chat/", { ".html": "text/html", ".png": "image/png" }),
+
     "/ /index.html": DefaultBindHandler("./content/index.html", "home"),
     "/about-me": DefaultBindHandler("./content/about-me.html", "about-me"),
     "/resume": DefaultBindHandler("./content/resume.html", "resume"),
