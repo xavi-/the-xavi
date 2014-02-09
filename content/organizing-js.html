@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="apple-mobile-web-app-capable" content="yes" /> 
+<title>Javascript Idioms: Understanding Funny Code</title>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/redmond/jquery-ui.css" />
+<link rel="stylesheet" href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" />
+<style>
+	html {
+		position: absolute;
+		top: 0; bottom: 0;
+		left: 0; right: 0;
+		padding: 8px;
+	}
+	ul { margin: 0; }
+	.ui-widget {
+		margin: 0px;
+		height: 100%;
+	}
+	.slide-content,
+	.ui-widget-header,
+	.ui-widget-footer {
+		padding: 0 1em;
+	}
+	.slide-content {
+		overflow: auto;
+		padding-top: 1em;
+		padding-bottom: .2em;
+	}
+	.slide-code {
+		font-family: monospace;
+		font-size: 110%;
+	}
+	.ui-widget-content {
+		height: 100%;
+		margin-top: -2px;
+		position: relative;
+		overflow: auto;
+	}
+	.ui-widget-footer {
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+	}
+	.ui-widget-footer h4 {
+		margin: .5em;
+	}
+	.prettyprint { tab-size: 4; }
+	.prettyprint>span,
+	.prettyprint>a {
+		opacity: .4;
+		line-height: 1.1em;
+	}
+	.slide-done .prettyprint>span,
+	.slide-done .prettyprint>a,
+	.slide-last-shown .prettyprint>span,
+	.prettyprint.slide-last-shown>span,
+	.prettyprint.slide-last-shown>a,
+	.prettyprint .slide-last-shown {
+		opacity: 1;
+	}
+	.prettyprint a {
+		text-decoration: underline !important;
+	}
+	.prettyprint a:hover span {
+		color: #00E !important;
+	}
+	table, td, th { border: thin solid black; border-collapse: collapse; }
+	table { width: 100%; font-weight: normal; }
+	tfoot { font-size: 80%; }
+</style>
+</head>
+<body>
+<div data-role="slide">
+	<div data-role="content">
+		<h1>Organizing Javsascript</h1>
+	</div>
+</div>
+<div data-role="slide">
+	<div data-role="header"><h2>What will I talk about?</h2></div>
+	<div data-role="content">
+		<ul>
+			<li data-init="hidden">Namespaces</li>
+			<li data-init="hidden">Modules</li>
+			<li data-init="hidden">Event/Async Based Programming</li>
+		</ul>
+		<p data-init="hidden" style="font-size:3em; text-align:center">
+			<strong>The Basics</strong>
+		</p>
+	</div>
+</div>
+<div data-role="slide">
+	<div data-role="header"><h2>The Basics</h2></div>
+	<div data-role="content">
+		<ul>
+			<li>Javascript does <strong>not</strong> have...
+				<ul>
+					<li data-init="hidden">Imports</li>
+					<li data-init="hidden">Modules</li>
+					<li data-init="hidden">Packages</li>
+					<li data-init="hidden">or Namespaces</li>
+				</ul>
+			</li>
+			<li data-init="hidden">Javascript <strong>does</strong> have...
+				<ul>
+					<li data-init="hidden">Objects</li>
+					<li data-init="hidden">Functions</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+<div data-role="slide">
+	<div data-role="header"><h2>Objects</h2></div>
+	<div data-role="content">
+		<ul>
+			<li>Maps strings to anything
+<pre class="prettyprint lang-js">
+<span data-init="hidden">var obj = { // Always use literals</span>
+<span data-init="hidden">	prop1: 1,</span>
+<span data-init="hidden">	"prop2": "two",</span>
+<span data-init="hidden">	3: function() { return "prop"; }</span>
+<span data-init="hidden">};</span>
+<span data-init="hidden">obj.prop1 === obj["prop1"]; // Two ways to retrieve values</span>
+<span data-init="hidden">obj["unknown"] === undefined; // Values default to undefinied</span>
+<span data-init="hidden">obj.prop4 = new Date(); // Add adhoc properties</span>
+<span data-init="hidden">obj["prop2"] = /regex/g; // Update adhoc properties</span>
+<span data-init="hidden">delete obj["3"]; // Deleting property</span>
+</pre>
+			</li>
+		</ul>
+	</div>
+</div>
+<div data-role="slide">
+	<div data-role="header"><h2>Functions</h2></div>
+	<div data-role="content">
+		<p>Two things know about functions:</p>
+		<ul>
+			<li data-init="hidden">Variables are scoped to the nearest function</li>
+			<li data-init="hidden">Functions can be self executing
+<pre class="prettyprint lang-js">
+(function() {
+	var foo = "bar"; // Only available in this function
+	// Code executed immediately
+})()
+</pre>
+			</li>
+		</ul>
+	</div>
+</div>
+<div data-role="slide">
+	<div data-role="header"><h2>Simple namespaces and module</h2></div>
+	<div data-role="content">
+		<ul>
+			<li data-init="hidden">Recurring pattern in all languages</li>
+			<li data-init="hidden">Organizes code and makes it discoverable</li>
+			<li data-init="hidden">Prevents pollution of the global namespace</li>
+			<li data-init="hidden">Javascript use objects to simulate namespaces
+<pre class="prettyprint lang-js">
+<span data-init="hidden">window.root = {};</span>
+<span data-init="hidden">window.root.module1 = {
+	func1: function() { /* ... */ },
+	func2: function() { /* ... */ }
+};</span>
+<span data-init="hidden">window.root.module2 = {
+	func1: function() { /* ... */ },
+	func2: function() { /* ... */ }
+};</span>
+<span data-init="hidden">// ^^^ Great if modules don't require private state
+// and all namespaces and modules are defined in one place</span>
+</pre>
+			</li>
+		</ul>
+	</div>
+</div>
+<div data-role="slide">
+	<div data-role="header"><h2>Namespace and module</h2></div>
+	<div data-role="content">
+<pre class="prettyprint lang-js">
+<span data-init="hidden">window.root = window.root || {}; // Same as if(!window.root) { window.root = {}; }</span>
+<span data-init="hidden">window.root.namespace = window.root.namespace || {};</span>
+
+<span data-init="hidden">(function(dependency1, exports) {</span>
+<span data-init="hidden">	var foo; // Private variable that's module scoped
+
+	function helperFunc() { } // Private function</span>
+
+<span data-init="hidden">	/* ... more module code ... */</span>
+
+<span data-init="hidden">	exports.function1 = function1; // Module API that's exposed to outside world</span>
+<span data-init="hidden">})(dependency1, window.root.namespace.moduleName || (window.root.anamespace.moduleName = {}));</span>
+</pre>
+	</div>
+</div>
+<div data-role="slide">
+	<div data-role="header"><h2>Events</h2></div>
+	<div data-role="content">
+		<ul>
+			<li data-init="hidden">The preferred way of commicating</li>
+			<li data-init="hidden">Decouples parts of code</li>
+			<li data-init="hidden">Reduces code duplication</li>
+			<li data-init="hidden">Trigger events with <span class="ui-state-highlight slide-code">$.fn.trigger</span></li>
+			<li data-init="hidden">Listen for events with <span class="ui-state-highlight slide-code">$.fn.bind</span></li>
+			<li data-init="hidden">Example:
+<pre class="prettyprint lang-js">
+<span data-init="hidden">$(".score-board")
+	.data("score", 0) // <a href="http://api.jquery.com/data/">Associates data with any element</a>
+	.bind("update-score", function(e, score) {
+		$(this)
+			.data("score", score)
+			.text(score)
+	})
+;</span>
+
+<span data-init="hidden">$(".inc-score").click(function() {
+	var $board = $(".score-board");
+	$board.trigger("update-score", $board.data("score") + 1);
+});</span>
+</pre>
+			</li>
+		</ul>
+	</div>
+</div>
+<div data-role="slide">
+	<div data-role="header"><h2>Async calls</h2></div>
+	<div data-role="content">
+		<ul>
+			<li data-init="hidden">Uses callbacks to delay calculation similar to events</li>
+			<li data-init="hidden">Usually necessary when retrieving data</li>
+			<li data-init="hidden">Usual pattern:
+<pre class="prettyprint lang-js">
+getData(params, function(err, data) {
+	if(err) { /* ... handle pattern ... */ }
+
+	/* ... use data ... */
+});
+</pre>
+			</li>
+		</ul>
+	</div>
+</div>
+<div data-role="slide">
+	<div data-role="header"><h2>Questions?</h2></div>
+	<div data-role="content">
+		<div data-init="hidden">
+			<h3 data-init="hidden" style="text-align: center; font-size: 2em">Thank you</h3>
+		</div>
+	</div>
+</div>
+<div data-role="footer">
+	<h4>Talk | 29 Oct 2012</h4>
+	<h4>Organizing Javsascript</h4>
+</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://github.com/cowboy/jquery-hashchange/raw/master/jquery.ba-hashchange.min.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script>
+$.fn.orElse = function(def) {
+	if(this.length === 0) { def.call(this); }
+	
+	return this;
+}
+
+$("[data-role]")
+	.filter("[data-role=slide]")
+		.addClass("ui-widget-content ui-corner-all")
+		.find("[data-init=hidden]").hide().end()
+		.not(":first").hide().end()
+		.append($("[data-role=footer]").addClass("ui-widget-footer ui-state-default ui-corner-all"))
+		.scroll(function() { // Handle vertical overflow of content
+			$("[data-role=footer]", this).css("bottom", -$(this).scrollTop());
+		})
+	.end()
+	.filter("[data-role=header]")
+		.addClass("ui-widget-header ui-corner-all")
+		.children("h2").addClass("ui-dialog-title").end()
+	.end()
+	.filter("[data-role=content]")
+		.addClass("slide-content")
+		// Ensure that the vertical scrollbar appears at the right height
+		.css("margin-bottom", $("[data-role=footer]").outerHeight() + 7)
+	.end()
+;
+$("body")
+	.addClass("ui-widget ui-state-default ui-corner-all")
+	.attr("tabindex", "1")
+	.bind("slide-forward slide-back", function() { // stop current animation
+		if($.timers.length) { $("[data-role=slide], [data-init=hidden]").stop(true, true) }
+	})
+	.bind("slide-forward", function() {
+		$(".slide-last-shown").removeClass("slide-last-shown");
+		
+		$("[data-role=slide]:visible")
+			.find("[data-init=hidden]:hidden")
+			.first().addClass("slide-last-shown").fadeIn().end()
+			.orElse(function() {
+				$("[data-role=slide]").not(":last").filter(":visible")
+					.addClass("slide-done")
+					.fadeOut(function() { $(this).next().addClass("slide-last-shown").fadeIn("fast"); })
+			});
+	})
+	.bind("slide-back", function() {
+		$(".slide-last-shown").removeClass("slide-last-shown");
+		
+		$("[data-role=slide]:visible")
+			.find("[data-init=hidden]:visible")
+			.eq(-2).addClass("slide-last-shown").end()
+			.last().fadeOut().end()
+			.orElse(function() {
+				$("[data-role=slide]").not(":first").filter(":visible")
+					.removeClass("slide-done")
+					.fadeOut(function() { $(this).prev().addClass("slide-last-hidden").fadeIn("fast"); })
+			});
+	})
+	.live("click touchstart MozTouchDown", function() { $(this).trigger("slide-forward") })
+	.live("keyup", function(e) {
+		$(this).trigger(e.which === $.ui.keyCode.LEFT ? "slide-back" : "slide-forward" );
+	})
+	.focus()
+;
+
+(function(curHash) {
+	$("body")
+		.bind("slide-back", function() {
+			curHash = Math.max(curHash - 1, 0);
+			if(location.hash === "" && curHash === 0) { return; }
+			location.hash = "#" + curHash;
+		})
+		.bind("slide-forward", function() { location.hash = "#" + (++curHash); });
+		
+	$(window)
+		.hashchange(function() {
+			var temp = +location.hash.substr(1);
+			
+			if(temp === curHash) { return; }
+			else if(temp > curHash) { $("body").trigger("slide-forward"); }
+			else { $("body").trigger("slide-back"); }
+			
+			curHash = temp;
+		});
+	
+	if(location.hash !== "") { location.hash = ""; }
+})(0);
+
+prettyPrint();
+</script>
+</body>
+</html>
