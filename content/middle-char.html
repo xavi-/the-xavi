@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Find the Middle</title>
+<style>
+	html, body { font-family: sans-serif; }
+	form { margin: 25px; font-size: 18px; }
+	input, output { font-size: 18px; font-family: monospace; vertical-align: middle; }
+	output { display: block; margin: 0 25px; }
+
+	#count { font-weight: bold; }
+
+	#middle { background-color: #AAAAFF; padding: 0 5px; }
+	#front, #back { background-color: #FFDDBB; }
+
+	#front, #middle, #back { white-space: pre; }
+</style>
+</head>
+<body>
+	<form>
+		<label>Quote: <input id="quote" type="text" /></label><input type="submit"/>
+	</form>
+	<output>
+		<div style="margin-bottom: 10px;">
+			Character count: <span id="count">0</span>
+		</div>
+		<span id="front"></span> <span id="middle"></span> <span id="back"></span>
+	</output>
+<script>
+	var quote = document.getElementById("quote");
+
+	var count = document.getElementById("count");
+	var front = document.getElementById("front");
+	var middle = document.getElementById("middle");
+	var back = document.getElementById("back");
+
+	document.getElementsByTagName("form")[0].addEventListener("submit", function(e) {
+		e.preventDefault();
+
+		var strQuote = quote.value.trim();
+		var midIdx = strQuote.length / 2;
+
+		count.innerHTML = strQuote.length;
+		front.innerHTML = strQuote.substr(0, Math.floor(midIdx));
+		back.innerHTML = strQuote.substr(Math.ceil(midIdx));
+
+		// is midIdx whole number?
+		if(midIdx === (midIdx | 0)) { middle.innerHTML = "_"; }
+		else { middle.innerHTML = strQuote.charAt(midIdx - 0.5); }
+	}, false);
+</script>
+</body>
+</html>
